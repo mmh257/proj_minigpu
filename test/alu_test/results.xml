@@ -1,0 +1,9 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1735849757" />
+    <testcase name="add_test_simple" classname="alu_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/alu_test/alu_test.py" lineno="21" time="0.001428842544555664" sim_time_ns="60.001" ratio_time="41992.73056966461" />
+    <testcase name="add_test_rand" classname="alu_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/alu_test/alu_test.py" lineno="42" time="0.0010247230529785156" sim_time_ns="40.001" ratio_time="39035.91305351326" />
+    <testcase name="mult_test_simple" classname="alu_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/alu_test/alu_test.py" lineno="70" time="0.001428842544555664" sim_time_ns="60.00099999999999" ratio_time="41992.7305696646" />
+    <testcase name="mult_test_rand" classname="alu_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/alu_test/alu_test.py" lineno="91" time="0.008455038070678711" sim_time_ns="400.00100000000003" ratio_time="47309.18969923583" />
+  </testsuite>
+</testsuites>

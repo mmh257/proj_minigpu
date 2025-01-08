@@ -1,0 +1,226 @@
+#! /opt/homebrew/Cellar/icarus-verilog/12.0/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/system.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/va_math.vpi";
+S_0x138e16cc0 .scope module, "xblock_rf" "xblock_rf" 2 18;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "reset";
+    .port_info 2 /INPUT 4 "cu_state";
+    .port_info 3 /INPUT 1 "rf_enable";
+    .port_info 4 /INPUT 16 "cu_id";
+    .port_info 5 /INPUT 4 "decoded_rd";
+    .port_info 6 /INPUT 4 "decoded_rs1";
+    .port_info 7 /INPUT 4 "decoded_rs2";
+    .port_info 8 /INPUT 4 "decoded_rimm";
+    .port_info 9 /INPUT 8 "decoded_imm";
+    .port_info 10 /INPUT 1 "is_alu";
+    .port_info 11 /INPUT 1 "is_const";
+    .port_info 12 /INPUT 1 "is_read";
+    .port_info 13 /INPUT 16 "lsu_load_data";
+    .port_info 14 /INPUT 16 "alu_out_data";
+    .port_info 15 /INPUT 1 "rf_wen";
+    .port_info 16 /INPUT 1 "rf_ren";
+    .port_info 17 /INPUT 4 "rf_addr";
+    .port_info 18 /INPUT 16 "rf_data";
+    .port_info 19 /OUTPUT 16 "rs1_data";
+    .port_info 20 /OUTPUT 16 "rs2_data";
+    .port_info 21 /OUTPUT 16 "rimm_data";
+P_0x138e076a0 .param/l "CU_IDX" 0 2 19, +C4<00000000000000000000000000000000>;
+P_0x138e076e0 .param/l "CU_WIDTH" 0 2 20, +C4<00000000000000000000000000000100>;
+P_0x138e07720 .param/l "DATA_WIDTH" 0 2 22, +C4<00000000000000000000000000010000>;
+P_0x138e07760 .param/l "DECODE" 1 2 74, C4<0010>;
+P_0x138e077a0 .param/l "DONE" 1 2 79, C4<0111>;
+P_0x138e077e0 .param/l "EXECUTE" 1 2 77, C4<0101>;
+P_0x138e07820 .param/l "FETCH" 1 2 73, C4<0001>;
+P_0x138e07860 .param/l "IDLE" 1 2 72, C4<0000>;
+P_0x138e078a0 .param/l "REQ" 1 2 75, C4<0011>;
+P_0x138e078e0 .param/l "THREAD_ID" 0 2 21, +C4<00000000000000000000000000000000>;
+P_0x138e07920 .param/l "WAIT" 1 2 76, C4<0100>;
+P_0x138e07960 .param/l "WRITEBACK" 1 2 78, C4<0110>;
+L_0x138e29120 .functor BUFZ 16, v0x138e29c30_0, C4<0000000000000000>, C4<0000000000000000>, C4<0000000000000000>;
+L_0x138e0c240 .functor BUFZ 16, v0x138e29d90_0, C4<0000000000000000>, C4<0000000000000000>, C4<0000000000000000>;
+L_0x138e2a090 .functor BUFZ 16, v0x138e29ad0_0, C4<0000000000000000>, C4<0000000000000000>, C4<0000000000000000>;
+o0x140040010 .functor BUFZ 16, C4<zzzzzzzzzzzzzzzz>; HiZ drive
+v0x138e16960_0 .net "alu_out_data", 15 0, o0x140040010;  0 drivers
+o0x140040040 .functor BUFZ 1, C4<z>; HiZ drive
+v0x138e28ba0_0 .net "clk", 0 0, o0x140040040;  0 drivers
+o0x140040070 .functor BUFZ 16, C4<zzzzzzzzzzzzzzzz>; HiZ drive
+v0x138e28c40_0 .net "cu_id", 15 0, o0x140040070;  0 drivers
+o0x1400400a0 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v0x138e28ce0_0 .net "cu_state", 3 0, o0x1400400a0;  0 drivers
+o0x1400400d0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0x138e28d90_0 .net "decoded_imm", 7 0, o0x1400400d0;  0 drivers
+o0x140040100 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v0x138e28e80_0 .net "decoded_rd", 3 0, o0x140040100;  0 drivers
+o0x140040130 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v0x138e28f30_0 .net "decoded_rimm", 3 0, o0x140040130;  0 drivers
+o0x140040160 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v0x138e28fe0_0 .net "decoded_rs1", 3 0, o0x140040160;  0 drivers
+o0x140040190 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v0x138e29090_0 .net "decoded_rs2", 3 0, o0x140040190;  0 drivers
+v0x138e291a0_0 .var/i "i", 31 0;
+o0x1400401f0 .functor BUFZ 1, C4<z>; HiZ drive
+v0x138e29250_0 .net "is_alu", 0 0, o0x1400401f0;  0 drivers
+o0x140040220 .functor BUFZ 1, C4<z>; HiZ drive
+v0x138e292f0_0 .net "is_const", 0 0, o0x140040220;  0 drivers
+o0x140040250 .functor BUFZ 1, C4<z>; HiZ drive
+v0x138e29390_0 .net "is_read", 0 0, o0x140040250;  0 drivers
+o0x140040280 .functor BUFZ 16, C4<zzzzzzzzzzzzzzzz>; HiZ drive
+v0x138e29430_0 .net "lsu_load_data", 15 0, o0x140040280;  0 drivers
+v0x138e294e0 .array "registers", 0 15, 15 0;
+o0x1400402b0 .functor BUFZ 1, C4<z>; HiZ drive
+v0x138e29580_0 .net "reset", 0 0, o0x1400402b0;  0 drivers
+o0x1400402e0 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v0x138e29620_0 .net "rf_addr", 3 0, o0x1400402e0;  0 drivers
+o0x140040310 .functor BUFZ 16, C4<zzzzzzzzzzzzzzzz>; HiZ drive
+v0x138e297b0_0 .net "rf_data", 15 0, o0x140040310;  0 drivers
+o0x140040340 .functor BUFZ 1, C4<z>; HiZ drive
+v0x138e29840_0 .net "rf_enable", 0 0, o0x140040340;  0 drivers
+o0x140040370 .functor BUFZ 1, C4<z>; HiZ drive
+v0x138e298e0_0 .net "rf_ren", 0 0, o0x140040370;  0 drivers
+o0x1400403a0 .functor BUFZ 1, C4<z>; HiZ drive
+v0x138e29980_0 .net "rf_wen", 0 0, o0x1400403a0;  0 drivers
+v0x138e29a20_0 .net "rimm_data", 15 0, L_0x138e2a090;  1 drivers
+v0x138e29ad0_0 .var "rimm_data_reg", 15 0;
+v0x138e29b80_0 .net "rs1_data", 15 0, L_0x138e29120;  1 drivers
+v0x138e29c30_0 .var "rs1_data_reg", 15 0;
+v0x138e29ce0_0 .net "rs2_data", 15 0, L_0x138e0c240;  1 drivers
+v0x138e29d90_0 .var "rs2_data_reg", 15 0;
+E_0x138e09e10 .event posedge, v0x138e28ba0_0;
+    .scope S_0x138e16cc0;
+T_0 ;
+    %wait E_0x138e09e10;
+    %load/vec4 v0x138e29580_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.0, 8;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x138e291a0_0, 0, 32;
+T_0.2 ;
+    %load/vec4 v0x138e291a0_0;
+    %cmpi/s 13, 0, 32;
+    %jmp/0xz T_0.3, 5;
+    %pushi/vec4 0, 0, 16;
+    %ix/getv/s 3, v0x138e291a0_0;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x138e294e0, 0, 4;
+    %load/vec4 v0x138e291a0_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x138e291a0_0, 0, 32;
+    %jmp T_0.2;
+T_0.3 ;
+    %pushi/vec4 0, 0, 16;
+    %ix/load 3, 13, 0;
+    %flag_set/imm 4, 0;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x138e294e0, 0, 4;
+    %pushi/vec4 4, 0, 16;
+    %ix/load 3, 14, 0;
+    %flag_set/imm 4, 0;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x138e294e0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %ix/load 3, 15, 0;
+    %flag_set/imm 4, 0;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x138e294e0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %assign/vec4 v0x138e29c30_0, 0;
+    %pushi/vec4 0, 0, 16;
+    %assign/vec4 v0x138e29d90_0, 0;
+    %pushi/vec4 0, 0, 16;
+    %assign/vec4 v0x138e29ad0_0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/vec4 v0x138e29840_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.4, 8;
+    %load/vec4 v0x138e28c40_0;
+    %ix/load 3, 13, 0;
+    %flag_set/imm 4, 0;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x138e294e0, 0, 4;
+    %load/vec4 v0x138e28ce0_0;
+    %dup/vec4;
+    %pushi/vec4 3, 0, 4;
+    %cmp/u;
+    %jmp/1 T_0.6, 6;
+    %dup/vec4;
+    %pushi/vec4 6, 0, 4;
+    %cmp/u;
+    %jmp/1 T_0.7, 6;
+    %jmp T_0.8;
+T_0.6 ;
+    %load/vec4 v0x138e298e0_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.9, 8;
+    %load/vec4 v0x138e28fe0_0;
+    %pad/u 6;
+    %ix/vec4 4;
+    %load/vec4a v0x138e294e0, 4;
+    %assign/vec4 v0x138e29c30_0, 0;
+    %load/vec4 v0x138e29090_0;
+    %pad/u 6;
+    %ix/vec4 4;
+    %load/vec4a v0x138e294e0, 4;
+    %assign/vec4 v0x138e29d90_0, 0;
+    %load/vec4 v0x138e28f30_0;
+    %pad/u 6;
+    %ix/vec4 4;
+    %load/vec4a v0x138e294e0, 4;
+    %assign/vec4 v0x138e29ad0_0, 0;
+T_0.9 ;
+    %jmp T_0.8;
+T_0.7 ;
+    %load/vec4 v0x138e29980_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.11, 8;
+    %load/vec4 v0x138e29390_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.13, 8;
+    %load/vec4 v0x138e29430_0;
+    %load/vec4 v0x138e28fe0_0;
+    %pad/u 6;
+    %ix/vec4 3;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x138e294e0, 0, 4;
+T_0.13 ;
+    %load/vec4 v0x138e292f0_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.15, 8;
+    %load/vec4 v0x138e28d90_0;
+    %pad/u 16;
+    %load/vec4 v0x138e28e80_0;
+    %pad/u 6;
+    %ix/vec4 3;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x138e294e0, 0, 4;
+T_0.15 ;
+    %load/vec4 v0x138e29250_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.17, 8;
+    %load/vec4 v0x138e16960_0;
+    %load/vec4 v0x138e28e80_0;
+    %pad/u 6;
+    %ix/vec4 3;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x138e294e0, 0, 4;
+T_0.17 ;
+T_0.11 ;
+    %jmp T_0.8;
+T_0.8 ;
+    %pop/vec4 1;
+T_0.4 ;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "xblock_rf.v";

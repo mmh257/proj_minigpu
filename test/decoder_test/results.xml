@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1736199139" />
+    <testcase name="manual_instr_test" classname="decoder_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/decoder_test/decoder_test.py" lineno="14" time="0.005204916000366211" sim_time_ns="240.001" ratio_time="46110.44635170171" />
+  </testsuite>
+</testsuites>

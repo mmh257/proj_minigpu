@@ -1,0 +1,263 @@
+$date
+	Tue Jan  7 12:12:44 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module wrapper_fetcher $end
+$scope module inst_fetcher $end
+$var wire 1 ! clk $end
+$var wire 4 " cu_state [3:0] $end
+$var wire 8 # curr_pc [7:0] $end
+$var wire 16 $ fetch_instr [15:0] $end
+$var wire 8 % fetch_req_addr [7:0] $end
+$var wire 1 & fetch_req_rdy $end
+$var wire 1 ' fetch_req_val $end
+$var wire 16 ( fetch_resp_inst [15:0] $end
+$var wire 1 ) fetch_resp_rdy $end
+$var wire 1 * fetch_resp_val $end
+$var wire 2 + fetch_state [1:0] $end
+$var wire 1 , reset $end
+$var parameter 4 - DECODE $end
+$var parameter 4 . DONE $end
+$var parameter 4 / EXECUTE $end
+$var parameter 4 0 FETCH $end
+$var parameter 2 1 FT_DONE $end
+$var parameter 2 2 FT_IDLE $end
+$var parameter 2 3 FT_REQ $end
+$var parameter 2 4 FT_WAIT $end
+$var parameter 4 5 IDLE $end
+$var parameter 32 6 INST_MSG_WIDTH $end
+$var parameter 32 7 PC_ADDR_WIDTH $end
+$var parameter 4 8 REQ $end
+$var parameter 4 9 WAIT $end
+$var parameter 4 : WRITEBACK $end
+$var reg 16 ; fetch_instr_reg [15:0] $end
+$var reg 8 < fetch_req_addr_reg [7:0] $end
+$var reg 1 = fetch_req_val_reg $end
+$var reg 1 > fetch_resp_rdy_reg $end
+$var reg 2 ? fetch_state_reg [1:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b110 :
+b100 9
+b11 8
+b1000 7
+b10000 6
+b0 5
+b10 4
+b1 3
+b0 2
+b11 1
+b1 0
+b101 /
+b111 .
+b10 -
+$end
+#0
+$dumpvars
+b0 ?
+x>
+x=
+bx <
+bx ;
+0,
+b0 +
+z*
+x)
+bz (
+x'
+z&
+bx %
+bx $
+bz #
+bz "
+1!
+$end
+#500
+0!
+#1000
+0)
+0>
+b0 %
+b0 <
+0'
+0=
+1!
+1,
+#1500
+0!
+#2000
+1!
+0,
+#2500
+0!
+#3000
+1!
+#3500
+0!
+#4000
+1!
+#4500
+0!
+#5000
+1!
+#5500
+0!
+#6000
+1!
+#6500
+0!
+#7000
+1!
+#7500
+0!
+#8000
+1!
+#8500
+0!
+#9000
+1!
+#9500
+0!
+#10000
+b1 "
+b0 #
+1!
+b0 (
+0*
+1&
+#10500
+0!
+#11000
+b1 #
+b1 +
+b1 ?
+1!
+#11500
+0!
+#12000
+0&
+b10 +
+b10 ?
+1)
+1>
+b1 %
+b1 <
+1'
+1=
+1!
+#12500
+0!
+#13000
+b1111111111111111 (
+1*
+b10 "
+1!
+#13500
+0!
+#14000
+b11 +
+b11 ?
+b1111111111111111 $
+b1111111111111111 ;
+0)
+0>
+0'
+0=
+1!
+#14500
+0!
+#15000
+b0 (
+0*
+b0 +
+b0 ?
+1!
+#15500
+0!
+#16000
+1&
+b1 "
+b10 #
+1!
+#16500
+0!
+#17000
+b11 #
+b1 +
+b1 ?
+1!
+#17500
+0!
+#18000
+0&
+b10 +
+b10 ?
+1)
+1>
+b11 %
+b11 <
+1'
+1=
+1!
+#18500
+0!
+#19000
+b101010110111 (
+1*
+b10 "
+1!
+#19500
+0!
+#20000
+b11 +
+b11 ?
+b101010110111 $
+b101010110111 ;
+0)
+0>
+0'
+0=
+1!
+#20500
+0!
+#21000
+b0 (
+0*
+b0 +
+b0 ?
+1!
+#21500
+0!
+#22000
+1&
+b1 "
+b100 #
+1!
+#22500
+0!
+#23000
+b101 #
+b1 +
+b1 ?
+1!
+#23500
+0!
+#24000
+b10 +
+b10 ?
+1)
+1>
+b101 %
+b101 <
+1'
+1=
+1!
+#24001

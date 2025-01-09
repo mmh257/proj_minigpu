@@ -1,6 +1,6 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1736269964" />
-    <testcase name="simple_progression" classname="fetcher_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/fetcher_test/fetcher_test.py" lineno="154" time="0.001538991928100586" sim_time_ns="24.001" ratio_time="15595.273478543766" />
+    <property name="random_seed" value="1736390383" />
+    <testcase name="simple_progression" classname="fetcher_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/fetcher_test/fetcher_test.py" lineno="157" time="0.001194000244140625" sim_time_ns="24.001" ratio_time="20101.335923322684" />
   </testsuite>
 </testsuites>

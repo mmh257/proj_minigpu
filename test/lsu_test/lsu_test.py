@@ -42,7 +42,7 @@ async def simple_progression(dut):
            (0b1111_0000_0000_1111,10), (100,100), (2, 10)]
 
   # Setting up data 
-  data_memory = data_mem.DataMemory(dut, 8, 16, 1)
+  data_memory = data_mem.DataMemory(dut, 8, 16, 1, "")
   data_memory.load(data)
 
   # data_memory.log_data()
@@ -64,7 +64,7 @@ async def simple_progression(dut):
   while (cycles < 50 and index < 9):
 
     # Run the test
-    data_memory.run()
+    data_memory.run_nostate()
 
     await RisingEdge(dut.clk)
     # dut._log.info(str(index))

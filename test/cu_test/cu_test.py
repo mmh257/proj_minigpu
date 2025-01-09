@@ -1,56 +1,84 @@
 # Simple Compute Unit Test to see if it is capable of processing an instruction
 import cocotb
-from cocotb.triggers import Timer 
+from cocotb.triggers import Timer , RisingEdge
 from cocotb.clock import Clock
 from random import randint
+import sys
+import os 
+sys.path.append(os.path.abspath('/Users/mhui/Documents/proj_hdl/proj_minigpu/test/monitors'))
+import data_mem
+import inst_mem
 
-# Defining coroutine classes for handling memory requests
-class InstMemory:
+# Reset Signal Function
+async def reset_dut(reset_n, duration_ns):
+    reset_n.value = 0
+    await Timer(duration_ns, units="ns")
+    reset_n.value = 1
+    await Timer(duration_ns, units="ns")
+    reset_n.value = 0 
+
+# Starting our Test
+@cocotb.test()
+async def simple_compute_unit_test(dut):
   '''
-    An Instruction Memory class interface capable of processing the 
-    rdy/val/msg system for handshaking. 
-    - Asynchronous memory handler, thus it does not need a clk
-    - Different I/O ports from the data memory handler
+    This test will perform a series of basic operations on a singular compute unit
+    with 4 active threads. Instruction Memory and Data Memory will be initialized 
+    beforehand following our custom 12 inst ISA.
+    The end result will be a simple vector add, two vectors of size 4.
 
-    Based off the example Monitors from cocotb examples
+    DATA Memory: 
+    1 2 3 4 4 3 2 1
+
+    INSTR Memory: 
+    LW R1 ThreadIdx : R1 = Mem[threadIdx] : Load data from Register 15 onto Register 1                          : 
+    CONST R10 4     : R10 = 4             : Load the constant value of 4 onto R10
+    ADD R9 R1 R10   : R9 = threadIdx + 4  : Add the ThreadIdx + 4 and store it onto R9 
+    LW R2 R9        : R2 = Mem[id+4]      : Load the value from data @ R9 onto R2
+    ADD R3 R1 R2    : R3 = R1 + R2        : Sum the value on R1 and R2
+    ADD R8 R9 R10   : R8 = threadIdx + 8  : Increment threadIdx by 4 again to get the next data memory location
+    SW R3 R8        : Mem[R8] = R3        : Store the Result
   '''
-  def __init__(self, dut, addr_bits, data_bits): 
-    self.dut = dut
-    self.addr_bits = addr_bits
-    self.data_bits = data_bits
-    self.mem = [0] * (2 ** addr_bits)
-    self.channels = 1 # 1 Channel because for one compute unit, only the fetcher interacts
-    self.chan_progress = [0] * 1 # Internal list to keep track of active memory channels
+  instructions = [
+    (0,  0b1001_0000_0001_1111), # LW R1 R15
+    (2,  0b1000_1010_0000_0100), # CONST R10 (4)
+    (4,  0b0000_1001_0001_1010), # ADD R9 R1 R10
+    (6,  0b1001_0000_0010_1001), # LW R2 R9
+    (8,  0b0000_0011_0001_0010), # ADD R3 R1 R2
+    (10, 0b0000_1000_1001_1010), # ADD R8 R9 R10
+    (12, 0b1010_0000_0011_1000), # SW R3 R8
+    (14, 0b1100_0000_0000_0000)  # JR - Signal End of Kernel
+  ]
+  data = [
+     (0, 1), (1, 2), (2, 3), (3, 4),
+     (4, 4), (5, 3), (6, 2), (7, 2)
+  ]
 
-    # Grabbing the "channels" of the dut that we communicate with 
-    self.fetch_req_rdy = getattr(dut, "fetch_req_rdy")
-    self.fetch_req_val = getattr(dut, "fetch_req_val")
-    self.fetch_req_addr = getattr(dut, "fetch_req_addr")
-    self.fetch_resp_rdy = getattr(dut, "fetch_resp_rdy")
-    self.fetch_resp_val = getattr(dut, "fetch_resp_val")
-    self.fetch_resp_inst = getattr(dut, "fetch_resp_inst")
+  # Setting up instr and data memory
+  inst_memory = inst_mem.InstMemory(dut, 8, 16, "")
+  data_memory = data_mem.DataMemory(dut, 8, 16, 4)
+  data_memory.load(data)
+  inst_memory.load(instructions)
 
-  def run(self):
-    # First updating the fetch_req_val and the fetch_resp_val values
-    # These are handled from the POV of the memory
-    # Thus we must generate these values when necessary
-    fetch_req_rdy = [0] * self.channels
-    fetch_resp_val = [0] * self.channels
-    fetch_resp_inst = [0] * self.channels
+  # Setting up clock
+  c = Clock(dut.clk, 1, "ns")
+  await cocotb.start(c.start())
 
-    # These are handled from the POV of the dut
-    # Thus, we simply need to grab these values every cycle of "run" to 
-    # properly update the output values above
-    fetch_req_val = []
-    fetch_req_addr = []
-    fetch_resp_rdy = []
-    for i in range (0, len(str(self.fetch_req_val.value))):
-      fetch_req_val.append(int(str(self.fetch_req_val.value[i])))
+  # Reset dut
+  await cocotb.start(reset_dut(dut.reset, 1))
+
+  await Timer(10, units = "ns")
+  dut.cu_enable.value = 1
+  dut.active_threads.value = 4;
+
+  # Progression
+  cycles = 0 
+  while (not dut.cu_complete.value):
+    inst_memory.run()
+    data_memory.run() 
     
+    await RisingEdge(dut.clk)
 
-    for i in range(self.channels):
-      # If we are not currently processing anything, we are ready for the next memory request
-      if (self.chan_progress[i] == 0):
-        self.fetch_req_rdy[i] = 1
-      
+    # Logic to progress & handle our input data
 
+
+    cycles = cycles + 1

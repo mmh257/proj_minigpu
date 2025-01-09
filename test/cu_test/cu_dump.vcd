@@ -1,0 +1,365 @@
+$date
+	Wed Jan  8 19:28:36 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module wrapper_cu $end
+$scope module inst_cu $end
+$var wire 2 ! active_threads [1:0] $end
+$var wire 1 " clk $end
+$var wire 4 # compute_state [3:0] $end
+$var wire 1 $ cu_enable $end
+$var wire 1 % fetch_req_rdy $end
+$var wire 16 & fetch_resp_inst [15:0] $end
+$var wire 1 ' fetch_resp_val $end
+$var wire 1 ( reset $end
+$var wire 4 ) rs2 [3:0] $end
+$var wire 4 * rs1 [3:0] $end
+$var wire 4 + rimm [3:0] $end
+$var wire 1 , rf_wen $end
+$var wire 1 - rf_ren $end
+$var wire 4 . rd [3:0] $end
+$var wire 4 / opcode [3:0] $end
+$var wire 1 0 mem_wen $end
+$var wire 1 1 mem_ren $end
+$var wire 1 2 is_store $end
+$var wire 1 3 is_nop $end
+$var wire 1 4 is_load $end
+$var wire 1 5 is_jr $end
+$var wire 1 6 is_const $end
+$var wire 1 7 is_branch $end
+$var wire 1 8 is_alu $end
+$var wire 8 9 imm [7:0] $end
+$var wire 2 : fetch_state [1:0] $end
+$var wire 1 ; fetch_resp_rdy $end
+$var wire 1 < fetch_req_val $end
+$var wire 8 = fetch_req_addr [7:0] $end
+$var wire 16 > fetch_instr [15:0] $end
+$var wire 4 ? cu_state [3:0] $end
+$var wire 1 @ cu_complete $end
+$var wire 4 A alu_func [3:0] $end
+$var parameter 32 B CU_IDX $end
+$var parameter 32 C DATA_ADDR_WIDTH $end
+$var parameter 32 D DATA_WIDTH $end
+$var parameter 32 E INST_MSG_WIDTH $end
+$var parameter 32 F NUM_THREADS $end
+$var parameter 32 G PC_ADDR_WIDTH $end
+$upscope $end
+$upscope $end
+$scope module wrapper_cu $end
+$scope module inst_cu $end
+$scope module inst_scheduler $end
+$var wire 4 H alu_func [3:0] $end
+$var wire 1 " clk $end
+$var wire 1 @ cu_complete $end
+$var wire 1 $ cu_enable $end
+$var wire 2 I fetch_state [1:0] $end
+$var wire 8 J imm [7:0] $end
+$var wire 1 8 is_alu $end
+$var wire 1 7 is_branch $end
+$var wire 1 6 is_const $end
+$var wire 1 5 is_jr $end
+$var wire 1 4 is_load $end
+$var wire 1 3 is_nop $end
+$var wire 1 2 is_store $end
+$var wire 1 1 mem_ren $end
+$var wire 1 0 mem_wen $end
+$var wire 8 K next_pc [7:0] $end
+$var wire 4 L rd [3:0] $end
+$var wire 1 ( reset $end
+$var wire 1 - rf_ren $end
+$var wire 1 , rf_wen $end
+$var wire 4 M rimm [3:0] $end
+$var wire 4 N rs1 [3:0] $end
+$var wire 4 O rs2 [3:0] $end
+$var wire 4 P cu_state [3:0] $end
+$var parameter 32 Q CU_WIDTH $end
+$var parameter 4 R DECODE $end
+$var parameter 4 S DONE $end
+$var parameter 4 T EXECUTE $end
+$var parameter 4 U FETCH $end
+$var parameter 2 V FT_DONE $end
+$var parameter 2 W FT_IDLE $end
+$var parameter 2 X FT_REQ $end
+$var parameter 2 Y FT_WAIT $end
+$var parameter 4 Z IDLE $end
+$var parameter 2 [ LSU_DONE $end
+$var parameter 2 \ LSU_IDLE $end
+$var parameter 2 ] LSU_REQ $end
+$var parameter 2 ^ LSU_WAIT $end
+$var parameter 32 _ PC_ADDR_WIDTH $end
+$var parameter 4 ` REQ $end
+$var parameter 4 a WAIT $end
+$var parameter 4 b WRITEBACK $end
+$var reg 1 c cu_complete_reg $end
+$var reg 4 d cu_state_reg [3:0] $end
+$var reg 1 e mem_ren_reg $end
+$var reg 1 f mem_wen_reg $end
+$var reg 1 g rf_ren_reg $end
+$var reg 1 h rf_wen_reg $end
+$var reg 1 i wait_check $end
+$var integer 32 j ii [31:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope module wrapper_cu $end
+$scope module inst_cu $end
+$scope module inst_fetcher $end
+$var wire 1 " clk $end
+$var wire 8 k curr_pc [7:0] $end
+$var wire 8 l fetch_req_addr [7:0] $end
+$var wire 1 % fetch_req_rdy $end
+$var wire 1 < fetch_req_val $end
+$var wire 16 m fetch_resp_inst [15:0] $end
+$var wire 1 ; fetch_resp_rdy $end
+$var wire 1 ' fetch_resp_val $end
+$var wire 2 n fetch_state [1:0] $end
+$var wire 1 ( reset $end
+$var wire 16 o fetch_instr [15:0] $end
+$var wire 4 p cu_state [3:0] $end
+$var parameter 4 q DECODE $end
+$var parameter 4 r DONE $end
+$var parameter 4 s EXECUTE $end
+$var parameter 4 t FETCH $end
+$var parameter 2 u FT_DONE $end
+$var parameter 2 v FT_IDLE $end
+$var parameter 2 w FT_REQ $end
+$var parameter 2 x FT_WAIT $end
+$var parameter 4 y IDLE $end
+$var parameter 32 z INST_MSG_WIDTH $end
+$var parameter 32 { PC_ADDR_WIDTH $end
+$var parameter 4 | REQ $end
+$var parameter 4 } WAIT $end
+$var parameter 4 ~ WRITEBACK $end
+$var reg 16 !" fetch_instr_reg [15:0] $end
+$var reg 8 "" fetch_req_addr_reg [7:0] $end
+$var reg 1 #" fetch_req_val_reg $end
+$var reg 1 $" fetch_resp_rdy_reg $end
+$var reg 2 %" fetch_state_reg [1:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope module wrapper_cu $end
+$scope module inst_cu $end
+$scope module inst_decoder $end
+$var wire 4 &" alu_func [3:0] $end
+$var wire 1 " clk $end
+$var wire 8 '" imm [7:0] $end
+$var wire 1 8 is_alu $end
+$var wire 1 7 is_branch $end
+$var wire 1 6 is_const $end
+$var wire 1 5 is_jr $end
+$var wire 1 4 is_load $end
+$var wire 1 3 is_nop $end
+$var wire 1 2 is_store $end
+$var wire 4 (" rd [3:0] $end
+$var wire 1 ( reset $end
+$var wire 4 )" rimm [3:0] $end
+$var wire 4 *" rs1 [3:0] $end
+$var wire 4 +" rs2 [3:0] $end
+$var wire 4 ," opcode [3:0] $end
+$var wire 16 -" instr [15:0] $end
+$var wire 4 ." cu_state [3:0] $end
+$var parameter 4 /" ADD $end
+$var parameter 4 0" BEQ $end
+$var parameter 4 1" BGT $end
+$var parameter 4 2" BLT $end
+$var parameter 4 3" BNE $end
+$var parameter 4 4" CONST $end
+$var parameter 4 5" DECODE $end
+$var parameter 4 6" DIV $end
+$var parameter 32 7" INST_MSG_WIDTH $end
+$var parameter 4 8" JR $end
+$var parameter 4 9" LW $end
+$var parameter 4 :" MUL $end
+$var parameter 4 ;" NOP $end
+$var parameter 32 <" PC_ADDR_WIDTH $end
+$var parameter 4 =" SUB $end
+$var parameter 4 >" SW $end
+$var parameter 4 ?" alu_add $end
+$var parameter 4 @" alu_and $end
+$var parameter 4 A" alu_cmp $end
+$var parameter 4 B" alu_div $end
+$var parameter 4 C" alu_mul $end
+$var parameter 4 D" alu_or $end
+$var parameter 4 E" alu_sll $end
+$var parameter 4 F" alu_srl $end
+$var parameter 4 G" alu_sub $end
+$var reg 4 H" alu_func_reg [3:0] $end
+$var reg 8 I" imm_reg [7:0] $end
+$var reg 1 J" is_alu_reg $end
+$var reg 1 K" is_branch_reg $end
+$var reg 1 L" is_const_reg $end
+$var reg 1 M" is_jr_reg $end
+$var reg 1 N" is_load_reg $end
+$var reg 1 O" is_nop_reg $end
+$var reg 1 P" is_store_reg $end
+$var reg 4 Q" rd_reg [3:0] $end
+$var reg 4 R" rimm_reg [3:0] $end
+$var reg 4 S" rs1_reg [3:0] $end
+$var reg 4 T" rs2_reg [3:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope module wrapper_cu $end
+$scope module inst_cu $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b1 G"
+b110 F"
+b1111 E"
+b101 D"
+b10 C"
+b11 B"
+b1000 A"
+b100 @"
+b0 ?"
+b1010 >"
+b1 ="
+b1000 <"
+b1011 ;"
+b10 :"
+b1001 9"
+b1100 8"
+b10000 7"
+b11 6"
+b10 5"
+b1000 4"
+b100 3"
+b110 2"
+b111 1"
+b101 0"
+b0 /"
+b110 ~
+b100 }
+b11 |
+b1000 {
+b10000 z
+b0 y
+b10 x
+b1 w
+b0 v
+b11 u
+b1 t
+b101 s
+b111 r
+b10 q
+b110 b
+b100 a
+b11 `
+b1000 _
+b10 ^
+b1 ]
+b0 \
+b11 [
+b0 Z
+b10 Y
+b1 X
+b0 W
+b11 V
+b1 U
+b101 T
+b111 S
+b10 R
+b100 Q
+b1000 G
+b100 F
+b10000 E
+b10000 D
+b1000 C
+b0 B
+$end
+#0
+$dumpvars
+bx T"
+bx S"
+bx R"
+bx Q"
+xP"
+xO"
+xN"
+xM"
+xL"
+xK"
+xJ"
+bx I"
+bx H"
+bx ."
+bx -"
+bx ,"
+bx +"
+bx *"
+bx )"
+bx ("
+bx '"
+bx &"
+bx %"
+x$"
+x#"
+bx ""
+bx !"
+bx p
+bx o
+bx n
+bz m
+bx l
+bx k
+bx j
+xi
+xh
+xg
+xf
+xe
+bx d
+xc
+bx P
+bx O
+bx N
+bx M
+bx L
+bx K
+bx J
+bx I
+bx H
+bx A
+x@
+bx ?
+bx >
+bx =
+x<
+x;
+bx :
+bx 9
+x8
+x7
+x6
+x5
+x4
+x3
+x2
+x1
+x0
+bx /
+bx .
+x-
+x,
+bx +
+bx *
+bx )
+z(
+z'
+bz &
+z%
+z$
+bx #
+z"
+bz !
+$end
+#1

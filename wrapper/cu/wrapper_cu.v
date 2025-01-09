@@ -13,7 +13,7 @@ module wrapper_cu #(
   // Compute Unit Functional Inputs
   input cu_enable,
   output cu_complete,
-  input [1:0] active_threads,
+  input [2:0] active_threads,
 
   // Compute Unit Functional Outputs
   output [3:0] compute_state,
@@ -81,9 +81,18 @@ cu #(
   .write_resp_val(write_resp_val)
 );
 
+// Dumping packed arrays
+// generate
+//   genvar i; 
+//   for (i = 0; i < NUM_THREADS; i=i+1)begin 
+//     wire tmp;
+//     assign tmp = read_req_rdy[i];
+//   end
+// endgenerate
+
 initial begin 
   $dumpfile("cu_dump.vcd");
-  $dumpvars(1, inst_cu);
+  $dumpvars(0, inst_cu);
 end
 
 endmodule

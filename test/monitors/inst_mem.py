@@ -12,7 +12,7 @@ class InstMemory:
 
     Based off the example Monitors from cocotb examples
   '''
-  def __init__(self, dut, addr_bits, data_bits, flag): 
+  def __init__(self, dut, addr_bits, data_bits): 
     self.dut = dut
     self.addr_bits = addr_bits
     self.data_bits = data_bits
@@ -27,8 +27,8 @@ class InstMemory:
     self.fetch_resp_rdy = getattr(dut, "fetch_resp_rdy")
     self.fetch_resp_val = getattr(dut, "fetch_resp_val")
     self.fetch_resp_inst = getattr(dut, "fetch_resp_inst")
-    if (flag == "fetcher"):
-      self.fetch_state = getattr(dut, "fetch_state")
+    self.cu_state = getattr(dut, "compute_state")
+    # self.fetch_state = getattr(dut, "fetch_state")
   
   def run(self):
     # First defining data that the memory (this class) handles
@@ -76,46 +76,48 @@ class InstMemory:
     self.fetch_resp_inst.value = fetch_resp_inst[0]
 
   def run_nostate(self):
-    # First defining data that the memory (this class) handles
-    fetch_req_rdy = [0] * self.channels
-    fetch_resp_val = [0] * self.channels
-    fetch_resp_inst = [0] * self.channels
+    if (int(self.cu_state.value) == 1):
+      # First defining data that the memory (this class) handles
+      fetch_req_rdy = [0] * self.channels
+      fetch_resp_val = [0] * self.channels
+      fetch_resp_inst = [0] * self.channels
 
-    # Data that we will read from the fetcher.v module (OUTPUT)
-    fetch_req_val = []
-    fetch_req_addr = []
-    fetch_resp_rdy = []
+      # Data that we will read from the fetcher.v module (OUTPUT)
+      fetch_req_val = []
+      fetch_req_addr = []
+      fetch_resp_rdy = []
 
-    # Using fetch_state to help us progress
-    # fetch_state = []
+      # Using fetch_state to help us progress
+      # fetch_state = []
 
-    # Grabbing the output data for each of the output ports
-    for i in range (0, len(self.fetch_req_val)):
-      fetch_req_val.append(self.fetch_req_val.value)
-    for i in range (0, len(self.fetch_resp_rdy)):
-      fetch_resp_rdy.append(self.fetch_resp_rdy.value)
-    for i in range (0, len(self.fetch_req_addr), self.addr_bits):
-      # This needs to iterate over every "8" bits because we iterate 1 bit per time
-      fetch_req_addr.append(self.fetch_req_addr.value[i:i+7])
+      # Grabbing the output data for each of the output ports
+      for i in range (0, len(self.fetch_req_val)):
+        fetch_req_val.append(self.fetch_req_val.value)
+      for i in range (0, len(self.fetch_resp_rdy)):
+        fetch_resp_rdy.append(self.fetch_resp_rdy.value)
+      for i in range (0, len(self.fetch_req_addr), self.addr_bits):
+        # This needs to iterate over every "8" bits because we iterate 1 bit per time
+        fetch_req_addr.append(self.fetch_req_addr.value[i:i+7])
 
-    # Logic to set the rdy/val handshaking signals
-    if self.progress[0] == 0: 
-      # Waiting to accept a new fetch request
-      fetch_req_rdy[0] = 1
-    if fetch_req_val[0] == 1: 
-      # If we receive a valid fetch request, put our tracker in progress mode
-      self.progress[0] = 1
-    if self.progress[0] == 1 and fetch_resp_rdy[0]:
-      # If we are in progress & the module is ready to accept a response
-      fetch_resp_val[0] = 1 
-      fetch_resp_inst[0] = self.mem[int(fetch_req_addr[0])]
-      self.progress[0] = 0
+      # Logic to set the rdy/val handshaking signals
+      if self.progress[0] == 0: 
+        # Waiting to accept a new fetch request
+        fetch_req_rdy[0] = 1
+      if fetch_req_val[0] == 1: 
+        # If we receive a valid fetch request, put our tracker in progress mode
+        self.progress[0] = 1
+      if self.progress[0] == 1 and fetch_resp_rdy[0]:
+        # If we are in progress & the module is ready to accept a response
+        fetch_resp_val[0] = 1 
+        fetch_resp_inst[0] = self.mem[int(fetch_req_addr[0])]
+        fetch_req_rdy[0] = 0
+        self.progress[0] = 0
+      
+      # Updating output values
+      self.fetch_req_rdy.value = fetch_req_rdy[0]
+      self.fetch_resp_val.value = fetch_resp_val[0]
+      self.fetch_resp_inst.value = fetch_resp_inst[0]
     
-    # Updating output values
-    self.fetch_req_rdy.value = fetch_req_rdy[0]
-    self.fetch_resp_val.value = fetch_resp_val[0]
-    self.fetch_resp_inst.value = fetch_resp_inst[0]
-  
   def write(self, addr, data):
     self.mem[addr] = data
 

@@ -51,7 +51,7 @@ module scheduler #(
 
   // PC logic
   input [PC_ADDR_WIDTH-1:0] next_pc, 
-  output [PC_ADDR_WIDTH-1:0] curr_pc [CU_WIDTH-1:0],
+  output [PC_ADDR_WIDTH-1:0] curr_pc,
 
   // Functional Outputs
   output rf_wen,
@@ -85,7 +85,8 @@ localparam  LSU_IDLE = 2'd0,
             LSU_DONE = 2'd3; 
 
 // Registering outputs
-reg [PC_ADDR_WIDTH-1:0] curr_pc_reg [CU_WIDTH-1:0];
+// reg [PC_ADDR_WIDTH-1:0] curr_pc_reg [CU_WIDTH-1:0];
+reg [PC_ADDR_WIDTH-1:0] curr_pc_reg;
 reg [3:0] cu_state_reg;
 reg cu_complete_reg;
 reg rf_wen_reg;
@@ -100,16 +101,24 @@ assign rf_ren = rf_ren_reg;
 assign mem_wen = mem_wen_reg;
 assign mem_ren = mem_ren_reg;
 
+// generate
+// genvar i; 
+// for (i=0;i<CU_WIDTH;i=i+1)begin 
+//   assign curr_pc[i] = curr_pc_reg[i];
+// end
+// endgenerate
+
 // Internal wire?/reg? to determine what request mode we are in 
 integer ii;
 reg wait_check;
 
 always @(posedge clk) begin 
   if (reset) begin 
-    // curr_pc_reg <= 0; 
-    for (ii=0;ii<CU_WIDTH;ii=ii+1) begin 
-      curr_pc_reg[ii] <= 0;
-    end
+    curr_pc_reg <= 0; 
+    // for (ii=0;ii<CU_WIDTH;ii=ii+1) begin 
+    //   curr_pc_reg[ii] <= 0;
+    // end
+
     cu_state_reg <= IDLE;
     cu_complete_reg <= 0;
     rf_ren_reg <= 0; 
@@ -123,10 +132,12 @@ always @(posedge clk) begin
           // If we are in the idle phase, we simply wait until we recieve a start signal 
           if (cu_enable) begin 
             cu_state_reg <= FETCH; 
-            // curr_pc_reg <= 0; 
-            for (ii=0;ii<CU_WIDTH;ii=ii+1) begin 
-              curr_pc_reg[ii] <= 0;
-            end
+            curr_pc_reg <= 0; 
+
+            // for (ii=0;ii<CU_WIDTH;ii=ii+1) begin 
+            //   curr_pc_reg[ii] <= 0;
+            // end
+
             cu_complete_reg <= 0;
             rf_ren_reg <= 0; 
             rf_wen_reg <= 0; 
@@ -158,11 +169,13 @@ always @(posedge clk) begin
         end
         WAIT: begin 
           // RF has a latency of 1 cycle, so this cycle only waits until all LSU's are ready 
+          wait_check = 1'b0;
           for (ii=0; ii<CU_WIDTH; ii=ii+1) begin 
             if (lsu_state[ii] == LSU_REQ || lsu_state[ii] == LSU_WAIT ) begin 
               wait_check = 1'b1;
             end
           end
+
           // If all LSU's are done, proceed
           if (~wait_check) begin 
             cu_state_reg <= EXECUTE; 
@@ -181,10 +194,12 @@ always @(posedge clk) begin
           end else begin 
             // need to update the "next" PC, re-enter fetch
             // NOTE: ASSUME NO BRANCH DIVERGENCE
-            // curr_pc_reg <= next_pc;
-            for (ii=0;ii<CU_WIDTH;ii=ii+1) begin 
-              curr_pc_reg[ii] <= next_pc;
-            end
+            curr_pc_reg <= next_pc;
+
+            // for (ii=0;ii<CU_WIDTH;ii=ii+1) begin 
+            //   curr_pc_reg[ii] <= next_pc;
+            // end
+
             cu_state_reg <= FETCH;
           end
         end

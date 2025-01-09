@@ -32,7 +32,7 @@ async def simple_compute_unit_test(dut):
     INSTR Memory: 
     LW R1 ThreadIdx : R1 = Mem[threadIdx] : Load data from Register 15 onto Register 1                          : 
     CONST R10 4     : R10 = 4             : Load the constant value of 4 onto R10
-    ADD R9 R1 R10   : R9 = threadIdx + 4  : Add the ThreadIdx + 4 and store it onto R9 
+    ADD R9 R10 R15   : R9 = 4 + threadIdx : Add the ThreadIdx + 4 and store it onto R9 
     LW R2 R9        : R2 = Mem[id+4]      : Load the value from data @ R9 onto R2
     ADD R3 R1 R2    : R3 = R1 + R2        : Sum the value on R1 and R2
     ADD R8 R9 R10   : R8 = threadIdx + 8  : Increment threadIdx by 4 again to get the next data memory location
@@ -41,7 +41,7 @@ async def simple_compute_unit_test(dut):
   instructions = [
     (0,  0b1001_0000_0001_1111), # LW R1 R15
     (2,  0b1000_1010_0000_0100), # CONST R10 (4)
-    (4,  0b0000_1001_0001_1010), # ADD R9 R1 R10
+    (4,  0b0000_1001_1010_1111), # ADD R9 R10 R15
     (6,  0b1001_0000_0010_1001), # LW R2 R9
     (8,  0b0000_0011_0001_0010), # ADD R3 R1 R2
     (10, 0b0000_1000_1001_1010), # ADD R8 R9 R10
@@ -50,11 +50,11 @@ async def simple_compute_unit_test(dut):
   ]
   data = [
      (0, 1), (1, 2), (2, 3), (3, 4),
-     (4, 4), (5, 3), (6, 2), (7, 2)
+     (4, 4), (5, 3), (6, 2), (7, 1)
   ]
 
   # Setting up instr and data memory
-  inst_memory = inst_mem.InstMemory(dut, 8, 16, "")
+  inst_memory = inst_mem.InstMemory(dut, 8, 16)
   data_memory = data_mem.DataMemory(dut, 8, 16, 4)
   data_memory.load(data)
   inst_memory.load(instructions)
@@ -73,8 +73,8 @@ async def simple_compute_unit_test(dut):
   # Progression
   cycles = 0 
   while (not dut.cu_complete.value):
-    inst_memory.run()
-    data_memory.run() 
+    inst_memory.run_nostate()
+    data_memory.run_nostate() 
     
     await RisingEdge(dut.clk)
 
@@ -82,3 +82,4 @@ async def simple_compute_unit_test(dut):
 
 
     cycles = cycles + 1
+  data_memory.log_data()

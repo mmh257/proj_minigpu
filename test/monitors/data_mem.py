@@ -12,7 +12,7 @@ class DataMemory:
   perspective where there are 4 active LSU modules interfacing with one shared memory
   '''
 
-  def __init__(self, dut, addr_bits, data_bits, num_chan, flag):
+  def __init__(self, dut, addr_bits, data_bits, num_chan):
     self.dut = dut
     self.addr_bits = addr_bits
     self.data_bits = data_bits
@@ -36,8 +36,8 @@ class DataMemory:
     # LSU Write Response
     self.write_resp_val = getattr(dut,"write_resp_val")
     # Compute Unit State
-    # self.cu_state = getattr(dut, "compute_state")
-    self.lsu_state = getattr(dut, "lsu_state")
+    self.cu_state = getattr(dut, "compute_state")
+    # self.lsu_state = getattr(dut, "lsu_state")
 
     # Internal progression states
     self.progress = [0] * num_chan
@@ -117,73 +117,105 @@ class DataMemory:
       for the handshaking memory interface
       ** Does not use the lsu_state flag to generate values
     '''
-    # Initializing lists to contain "output" data from the LSU's
-    read_req_addr = []
-    read_req_addr_val = []
-    read_resp_rdy = []
-    write_req_addr = []
-    write_req_data = []
-    write_req_val = []
-  
-    # Initializing lists to contain inputs to the LSU that we will generate
-    read_req_rdy = [0] * self.channels
-    read_resp_data = [0] * self.channels
-    read_resp_data_val = [0] * self.channels
-    write_req_rdy = [0] * self.channels
-    write_resp_val = [0] * self.channels
+    if int(self.cu_state.value) >= 4 and int(self.cu_state.value) <= 6: 
+      # Initializing lists to contain "output" data from the LSU's
+      read_req_addr = []
+      read_req_addr_val = []
+      read_resp_rdy = []
+      write_req_addr = []
+      write_req_data = []
+      write_req_val = []
+    
+      # Initializing lists to contain inputs to the LSU that we will generate
+      read_req_rdy = [0] * self.channels
+      read_resp_data = [0] * self.channels
+      read_resp_data_val = [0] * self.channels
+      write_req_rdy = [0] * self.channels
+      write_resp_val = [0] * self.channels
 
-    # Grabbing output values
-    for i in range(0, len(self.read_req_addr), self.addr_bits):
-      read_req_addr.append(self.read_req_addr.value[i:i+self.addr_bits-1])
-    for i in range(0, len(self.read_req_addr_val)):
-      read_req_addr_val.append(self.read_req_addr_val.value)  
-    for i in range(0, len(self.read_resp_rdy)):
-      read_resp_rdy.append(self.read_resp_rdy.value)  
-    for i in range(0, len(self.write_req_addr), self.addr_bits):
-      write_req_addr.append(self.write_req_addr.value[i:i+self.addr_bits-1])  
-    for i in range(0, len(self.write_req_data), self.data_bits):
-      write_req_data.append(self.write_req_data.value[i:i+self.data_bits-1])  
-    for i in range(0, len(self.write_req_val)):
-      write_req_val.append(self.write_req_val.value)  
+      # Grabbing output values 
+      read_req_addr = self.read_req_addr.value
+      read_req_addr_val = self.read_req_addr_val.value
+      read_resp_rdy = self.read_resp_rdy.value
+      write_req_addr = self.write_req_addr.value
+      write_req_data = self.write_req_data.value
+      write_req_val = self.write_req_val.value
+      # self.dut._log.info(f"{read_req_addr}")
 
-    # Setting output values
-    for n in range(self.channels):
-      if (self.progress[n] == 0):
-        # Current Channel isn't doing anything
-        read_req_rdy[n] = 1
-        write_req_rdy[n] = 1
-      if read_req_addr_val[n] or write_req_val[n]: 
-        # Have a valid write or read request
-        self.progress[n] = 1
-      if self.progress[n] and read_resp_rdy[n]: 
-        # Ready to send a read response
-        read_resp_data[n] = self.mem[int(read_req_addr[n])]
-        read_resp_data_val[n] = 1
-        self.progress[n] = 0
-      if self.progress[n] and write_req_val[n]: 
-        # Redundant to above condition, but ready to write val
-        self.mem[int(write_req_addr[n])] = int(write_req_data[n])
-        write_resp_val[n] = 1
-        self.progress[n] = 0
-      
-    # Generating output values
-    read_req_rdy_str = ""
-    read_resp_data_val_str = ""
-    write_req_rdy_str = ""
-    write_resp_val_str = ""
-    read_resp_data_str = ""
-    for n in range (self.channels): 
-      read_req_rdy_str += str(read_req_rdy[n]) # Only 1s or 0s
-      read_resp_data_val_str += str(read_resp_data_val[n])
-      write_req_rdy_str += str(write_req_rdy[n])
-      write_resp_val_str += str(write_resp_val[n])
-      read_resp_data_str += str(format(read_resp_data[n], "016b"))
+      # for i in range(0, len(self.read_req_addr), self.addr_bits):
+      #   read_req_addr.append(self.read_req_addr.value[i:i+self.addr_bits-1])
+      # for i in range(0, len(self.read_req_addr_val)):
+      #   read_req_addr_val.append(self.read_req_addr_val.value)  
+      # for i in range(0, len(self.read_resp_rdy)):
+      #   read_resp_rdy.append(self.read_resp_rdy.value)  
+      # for i in range(0, len(self.write_req_addr), self.addr_bits):
+      #   write_req_addr.append(self.write_req_addr.value[i:i+self.addr_bits-1])  
+      # for i in range(0, len(self.write_req_data), self.data_bits):
+      #   write_req_data.append(self.write_req_data.value[i:i+self.data_bits-1])  
+      # for i in range(0, len(self.write_req_val)):
+      #   write_req_val.append(self.write_req_val.value)  
 
-    self.read_req_rdy.value = int(read_req_rdy_str)
-    self.read_resp_data_val.value = int(read_resp_data_val_str)
-    self.write_req_rdy.value = int(write_req_rdy_str)
-    self.write_resp_val.value = int(write_resp_val_str)
-    self.read_resp_data.value = int(read_resp_data_str, 2)
+      # Setting output values
+      for n in range(self.channels):
+        if (self.progress[n] == 0):
+          # Current Channel isn't doing anything
+          read_req_rdy[n] = 1
+          write_req_rdy[n] = 1
+        if read_req_addr_val[n] or write_req_val[n]: 
+          # Have a valid write or read request
+          self.progress[n] = 1
+        if self.progress[n] and read_resp_rdy[n]: 
+          self.dut._log.info(f"HERE{(read_resp_rdy)}")
+          # Ready to send a read response
+          read_resp_data[n] = self.mem[int(read_req_addr[n])]
+          read_resp_data_val[n] = 1
+          self.progress[n] = 0
+        if self.progress[n] and write_req_val[n]: 
+          # Redundant to above condition, but ready to write val
+          self.mem[int(write_req_addr[n])] = int(write_req_data[n])
+          write_resp_val[n] = 1
+          self.progress[n] = 0
+
+      # self.dut._log.info(f"{read_req_rdy}")
+        
+      # Generating output values
+      read_req_rdy_str = ""
+      read_resp_data_val_str = ""
+      write_req_rdy_str = ""
+      write_resp_val_str = ""
+      read_resp_data_str = ""
+      for n in range (self.channels): 
+        read_req_rdy_str += str(read_req_rdy[n]) # Only 1s or 0s
+        read_resp_data_val_str += str(read_resp_data_val[n])
+        write_req_rdy_str += str(write_req_rdy[n])
+        write_resp_val_str += str(write_resp_val[n])
+        read_resp_data_str += str(format(read_resp_data[n], "016b"))
+    
+      # self.dut._log.info(f"{read_req_rdy_str}")
+      any_progress = False
+      for n in range (self.channels):
+        if self.progress[n]: 
+          any_progress = True
+      self.read_req_rdy.value = read_req_rdy
+      self.write_req_rdy.value = write_req_rdy
+      self.write_resp_val.value = write_resp_val
+      # if (any_progress):
+      self.read_resp_data_val.value = read_resp_data_val
+      self.read_resp_data.value = read_resp_data
+
+      # any_progress = False
+      # for n in range (self.channels):
+      #   if self.progress[n]: 
+      #     any_progress = True
+      # self.read_req_rdy.value = int(read_req_rdy_str,2)
+      # self.write_req_rdy.value = int(write_req_rdy_str,2)
+      # self.write_resp_val.value = int(write_resp_val_str,2)
+      # if (any_progress):
+      #   # self.read_req_rdy.value = int(read_req_rdy_str)
+      #   self.read_resp_data_val.value = int(read_resp_data_val_str,2)
+      #   # self.write_req_rdy.value = int(write_req_rdy_str)
+      #   # self.write_resp_val.value = int(write_resp_val_str)
+      #   self.read_resp_data.value = int(read_resp_data_str, 2)
 
 
   def write(self, addr, data):

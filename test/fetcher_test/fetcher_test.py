@@ -165,7 +165,7 @@ async def simple_progression(dut):
   await cocotb.start(c.start())
 
   # Setting up our data
-  instr_mem = inst_mem.InstMemory(dut, 8, 16, "fetcher")
+  instr_mem = inst_mem.InstMemory(dut, 8, 16)
   instr_mem.load(instr_data)
 
   # instr_mem.log_data()

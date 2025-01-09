@@ -26,7 +26,7 @@ module cu #(
   // Compute Unit Functional Inputs
   input cu_enable,
   output cu_complete,
-  input [1:0] active_threads,
+  input [2:0] active_threads,
 
   // Compute Unit Functional Outputs
   output [3:0] compute_state,
@@ -63,8 +63,8 @@ module cu #(
 
 // Internal Connection Regs
 // Scheduler
-reg rf_wen;
-reg rf_ren;
+wire rf_wen;
+wire rf_ren;
 reg mem_ren;
 reg mem_wen;
 reg [3:0] cu_state;
@@ -97,6 +97,12 @@ reg [1:0] lsu_state [NUM_THREADS-1:0];
 reg [PC_ADDR_WIDTH-1:0] curr_pc [NUM_THREADS-1:0];
 wire [PC_ADDR_WIDTH-1:0] next_pc [NUM_THREADS-1:0];
 
+// Internal Signals
+wire rf_read_en;
+assign rf_read_en = is_load || is_store || is_alu || is_branch;
+wire rf_write_en;
+assign rf_write_en = is_load || is_alu || is_const;
+
 // Module Instantiations (TOP TO BOTTOM INSTANTIATIONS)
 scheduler #(
   .PC_ADDR_WIDTH(PC_ADDR_WIDTH),
@@ -125,7 +131,7 @@ scheduler #(
   .lsu_state(lsu_state),
   // From PC
   .next_pc(next_pc[0]), // Only using the zero's thread PC
-  .curr_pc(curr_pc),
+  .curr_pc(curr_pc[0]),
   //Outputs 
   .rf_wen(rf_wen),
   .rf_ren(rf_ren),
@@ -214,13 +220,13 @@ for (i=0; i < NUM_THREADS; i=i+1) begin
     .decoded_imm(imm),
     .is_alu(is_alu),
     .is_const(is_const),
-    .is_read(is_read),
+    .is_read(is_load),
     // LSU Connection
     .lsu_load_data(lsu_load_data[i]),
     .alu_out_data(alu_out_data[i]),
     // Functional IO
-    .rf_wen(rf_wen),
-    .rf_ren(rf_ren),
+    .rf_wen(rf_write_en),
+    .rf_ren(rf_read_en),
     .rs1_data(rs1_data[i]),
     .rs2_data(rs2_data[i]),
     .rimm_data(rimm_data[i])
@@ -231,8 +237,8 @@ for (i=0; i < NUM_THREADS; i=i+1) begin
     .reset(reset),
     .alu_en(i<NUM_THREADS),
     .alu_func(alu_func),
-    .a(a[i]),
-    .b(b[i]),
+    .a(rs1_data[i]),
+    .b(rs2_data[i]),
     .out(alu_out_data[i]),
     .cmp_lt(cmp_lt[i]),
     .cmp_eq(cmp_eq[i])
@@ -246,8 +252,8 @@ for (i=0; i < NUM_THREADS; i=i+1) begin
     .reset(reset),
     .cu_state(cu_state),
     .lsu_en(i<NUM_THREADS),
-    .mem_ren(mem_ren),
-    .mem_wen(mem_wen),
+    .mem_ren(is_load),
+    .mem_wen(is_store),
     .rs1(rs1_data[i]),
     .rs2(rs2_data[i]),
     .lsu_data_out(lsu_load_data[i]),
@@ -286,13 +292,13 @@ for (i=0; i < NUM_THREADS; i=i+1) begin
 end
 endgenerate
 
-// VCD Dumping 
-initial begin 
-  $dumpfile("cu_dump.vcd");
-  $dumpvars(1, cu);
-  $dumpvars(2, inst_scheduler);
-  $dumpvars(2, inst_fetcher);
-  $dumpvars(2, inst_decoder);
-end
+// // VCD Dumping 
+// initial begin 
+//   $dumpfile("cu_dump.vcd");
+//   $dumpvars(1, cu);
+//   $dumpvars(2, inst_scheduler);
+//   $dumpvars(2, inst_fetcher);
+//   $dumpvars(2, inst_decoder);
+// end
 
 endmodule

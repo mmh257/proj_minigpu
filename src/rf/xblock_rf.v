@@ -83,10 +83,23 @@ always @(posedge clk) begin
   if (reset) begin 
     // Initialize Everything to 0
     // initial begin 
-      for (i=0; i<13; i=i+1) begin 
-        registers[i] <= 16'b0;
-      end
+      // for (i=0; i<13; i=i+1) begin 
+      //   registers[i] <= 16'b0;
+      // end
     // end
+    registers[0] <= 0;
+    registers[1] <= 0;
+    registers[2] <= 0;
+    registers[3] <= 0;
+    registers[4] <= 0;
+    registers[5] <= 0;
+    registers[6] <= 0;
+    registers[7] <= 0;
+    registers[8] <= 0;
+    registers[9] <= 0;
+    registers[10] <= 0;
+    registers[11] <= 0;
+    registers[12] <= 0;
     
     registers[13] <= CU_IDX;
     registers[14] <= CU_WIDTH;
@@ -98,7 +111,7 @@ always @(posedge clk) begin
   else begin 
     if (rf_enable) begin 
       // Temporary inclusion
-      registers[13] <= cu_id; 
+      registers[13] <= cu_id;
 
       case (cu_state)
         REQ: begin 
@@ -128,5 +141,47 @@ always @(posedge clk) begin
     end
   end
 end
+
+
+wire [15:0] reg0;
+wire [15:0] reg1;
+wire [15:0] reg2;
+wire [15:0] reg3;
+wire [15:0] reg4;
+wire [15:0] reg5;
+wire [15:0] reg6;
+wire [15:0] reg7;
+wire [15:0] reg8;
+wire [15:0] reg9;
+wire [15:0] reg10;
+wire [15:0] reg11;
+wire [15:0] reg12;
+wire [15:0] reg13;
+wire [15:0] reg14;
+wire [15:0] reg15;
+assign reg0 = registers[0];
+assign reg1 = registers[1];
+assign reg2 = registers[2];
+assign reg3 = registers[3];
+assign reg4 = registers[4];
+assign reg5 = registers[5];
+assign reg6 = registers[6];
+assign reg7 = registers[7];
+assign reg8 = registers[8];
+assign reg9 = registers[9];
+assign reg10 = registers[10];
+assign reg11 = registers[11];
+assign reg12 = registers[12];
+assign reg13 = registers[13];
+assign reg14 = registers[14];
+assign reg15 = registers[15];
+
+// generate
+//   genvar idx;
+//   for(idx = 0; idx < 16; idx = idx+1) begin
+//     wire [15:0] tmp;
+//     assign tmp = registers[idx];
+//   end
+// endgenerate
 
 endmodule

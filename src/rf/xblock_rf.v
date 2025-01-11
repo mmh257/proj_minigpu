@@ -142,7 +142,7 @@ always @(posedge clk) begin
   end
 end
 
-
+// Manually assigning wires to view in GTKWave
 wire [15:0] reg0;
 wire [15:0] reg1;
 wire [15:0] reg2;
@@ -175,13 +175,5 @@ assign reg12 = registers[12];
 assign reg13 = registers[13];
 assign reg14 = registers[14];
 assign reg15 = registers[15];
-
-// generate
-//   genvar idx;
-//   for(idx = 0; idx < 16; idx = idx+1) begin
-//     wire [15:0] tmp;
-//     assign tmp = registers[idx];
-//   end
-// endgenerate
 
 endmodule

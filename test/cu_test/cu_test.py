@@ -78,8 +78,6 @@ async def simple_compute_unit_test(dut):
     
     await RisingEdge(dut.clk)
 
-    # Logic to progress & handle our input data
-
-
     cycles = cycles + 1
+    
   data_memory.log_data()

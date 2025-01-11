@@ -134,7 +134,7 @@ scheduler #(
   .curr_pc(curr_pc[0]),
   //Outputs 
   .rf_wen(rf_wen),
-  .rf_ren(rf_ren),
+  .rf_ren(rf_ren), // Defunct Output Signals from the Scheduler, !!! remove in cleanup
   .mem_ren(mem_ren),
   .mem_wen(mem_wen),
   .cu_state(cu_state),

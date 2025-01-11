@@ -1,6 +1,8 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1736450666" />
-    <testcase name="simple_compute_unit_test" classname="cu_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/cu_test/cu_test.py" lineno="21" time="0.008913278579711914" sim_time_ns="101.001" ratio_time="11331.520618001872" />
+    <property name="random_seed" value="1736447535" />
+    <testcase name="simple_compute_unit_test" classname="cu_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/cu_test/cu_test.py" lineno="21" time="93855.04238915443" sim_time_ns="5182.0" ratio_time="0.05521280336237762">
+      <failure message="Test failed with RANDOM_SEED=1736447535" />
+    </testcase>
   </testsuite>
 </testsuites>

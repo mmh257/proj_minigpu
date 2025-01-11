@@ -81,15 +81,7 @@ cu #(
   .write_resp_val(write_resp_val)
 );
 
-// Dumping packed arrays
-// generate
-//   genvar i; 
-//   for (i = 0; i < NUM_THREADS; i=i+1)begin 
-//     wire tmp;
-//     assign tmp = read_req_rdy[i];
-//   end
-// endgenerate
-
+// Dumping Data
 initial begin 
   $dumpfile("cu_dump.vcd");
   $dumpvars(0, inst_cu);

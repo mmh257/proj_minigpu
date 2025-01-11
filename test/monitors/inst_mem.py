@@ -88,7 +88,6 @@ class InstMemory:
       fetch_resp_rdy = []
 
       # Using fetch_state to help us progress
-      # fetch_state = []
 
       # Grabbing the output data for each of the output ports
       for i in range (0, len(self.fetch_req_val)):

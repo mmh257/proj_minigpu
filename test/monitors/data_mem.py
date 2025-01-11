@@ -117,6 +117,7 @@ class DataMemory:
       for the handshaking memory interface
       ** Does not use the lsu_state flag to generate values
     '''
+    # Only run our module if we are actually doing a data request
     if int(self.cu_state.value) >= 4 and int(self.cu_state.value) <= 6: 
       # Initializing lists to contain "output" data from the LSU's
       read_req_addr = []
@@ -141,19 +142,6 @@ class DataMemory:
       write_req_data = self.write_req_data.value
       write_req_val = self.write_req_val.value
       # self.dut._log.info(f"{read_req_addr}")
-
-      # for i in range(0, len(self.read_req_addr), self.addr_bits):
-      #   read_req_addr.append(self.read_req_addr.value[i:i+self.addr_bits-1])
-      # for i in range(0, len(self.read_req_addr_val)):
-      #   read_req_addr_val.append(self.read_req_addr_val.value)  
-      # for i in range(0, len(self.read_resp_rdy)):
-      #   read_resp_rdy.append(self.read_resp_rdy.value)  
-      # for i in range(0, len(self.write_req_addr), self.addr_bits):
-      #   write_req_addr.append(self.write_req_addr.value[i:i+self.addr_bits-1])  
-      # for i in range(0, len(self.write_req_data), self.data_bits):
-      #   write_req_data.append(self.write_req_data.value[i:i+self.data_bits-1])  
-      # for i in range(0, len(self.write_req_val)):
-      #   write_req_val.append(self.write_req_val.value)  
 
       # Setting output values
       for n in range(self.channels):
@@ -192,30 +180,12 @@ class DataMemory:
         read_resp_data_str += str(format(read_resp_data[n], "016b"))
     
       # self.dut._log.info(f"{read_req_rdy_str}")
-      any_progress = False
-      for n in range (self.channels):
-        if self.progress[n]: 
-          any_progress = True
+
       self.read_req_rdy.value = read_req_rdy
       self.write_req_rdy.value = write_req_rdy
       self.write_resp_val.value = write_resp_val
-      # if (any_progress):
       self.read_resp_data_val.value = read_resp_data_val
       self.read_resp_data.value = read_resp_data
-
-      # any_progress = False
-      # for n in range (self.channels):
-      #   if self.progress[n]: 
-      #     any_progress = True
-      # self.read_req_rdy.value = int(read_req_rdy_str,2)
-      # self.write_req_rdy.value = int(write_req_rdy_str,2)
-      # self.write_resp_val.value = int(write_resp_val_str,2)
-      # if (any_progress):
-      #   # self.read_req_rdy.value = int(read_req_rdy_str)
-      #   self.read_resp_data_val.value = int(read_resp_data_val_str,2)
-      #   # self.write_req_rdy.value = int(write_req_rdy_str)
-      #   # self.write_resp_val.value = int(write_resp_val_str)
-      #   self.read_resp_data.value = int(read_resp_data_str, 2)
 
 
   def write(self, addr, data):

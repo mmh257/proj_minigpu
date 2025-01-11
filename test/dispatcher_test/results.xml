@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1736615632" />
+    <testcase name="simple_test" classname="dispatcher_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/dispatcher_test/dispatcher_test.py" lineno="15" time="0.0019609928131103516" sim_time_ns="23.001" ratio_time="11729.262772522798" />
+  </testsuite>
+</testsuites>

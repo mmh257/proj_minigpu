@@ -1,0 +1,635 @@
+$date
+	Mon Jan 13 17:00:57 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module wrapper_datacontroller $end
+$scope module inst_datacont $end
+$var wire 1 ! clk $end
+$var wire 4 " compute_unit [3:0] $end
+$var wire 1 # mem2read_req_rdy0 $end
+$var wire 1 $ read_req_rdy0 $end
+$var wire 1 % reset $end
+$var parameter 4 & DONE $end
+$var parameter 4 ' EXECUTE $end
+$var parameter 4 ( IDLE $end
+$var parameter 32 ) MAX_THREADS $end
+$var parameter 32 * MEM_ADDR_WIDTH $end
+$var parameter 32 + MEM_DATA_WIDTH $end
+$var parameter 32 , NUM_CORES $end
+$var parameter 32 - NUM_DATA_CHAN $end
+$var parameter 4 . READ_REQUEST $end
+$var parameter 4 / REQ $end
+$var parameter 4 0 RESPONSE $end
+$var parameter 4 1 WAIT $end
+$var parameter 4 2 WRITEBACK $end
+$var parameter 4 3 WRITE_REQUEST $end
+$var reg 4 4 channel_state [3:0] $end
+$var reg 4 5 selected_unit [3:0] $end
+$var integer 32 6 i [31:0] $end
+$scope begin genblk1[0] $end
+$var parameter 2 7 j $end
+$upscope $end
+$scope begin genblk1[1] $end
+$var parameter 2 8 j $end
+$upscope $end
+$scope begin genblk1[2] $end
+$var parameter 3 9 j $end
+$upscope $end
+$scope begin genblk1[3] $end
+$var parameter 3 : j $end
+$upscope $end
+$scope begin genblk1[4] $end
+$var parameter 4 ; j $end
+$upscope $end
+$scope begin genblk1[5] $end
+$var parameter 4 < j $end
+$upscope $end
+$scope begin genblk1[6] $end
+$var parameter 4 = j $end
+$upscope $end
+$scope begin genblk1[7] $end
+$var parameter 4 > j $end
+$upscope $end
+$scope begin genblk1[8] $end
+$var parameter 5 ? j $end
+$upscope $end
+$scope begin genblk1[9] $end
+$var parameter 5 @ j $end
+$upscope $end
+$scope begin genblk1[10] $end
+$var parameter 5 A j $end
+$upscope $end
+$scope begin genblk1[11] $end
+$var parameter 5 B j $end
+$upscope $end
+$scope begin genblk1[12] $end
+$var parameter 5 C j $end
+$upscope $end
+$scope begin genblk1[13] $end
+$var parameter 5 D j $end
+$upscope $end
+$scope begin genblk1[14] $end
+$var parameter 5 E j $end
+$upscope $end
+$scope begin genblk1[15] $end
+$var parameter 5 F j $end
+$upscope $end
+$scope begin genblk2[0] $end
+$var parameter 2 G j $end
+$upscope $end
+$scope begin genblk2[1] $end
+$var parameter 2 H j $end
+$upscope $end
+$scope begin genblk2[2] $end
+$var parameter 3 I j $end
+$upscope $end
+$scope begin genblk2[3] $end
+$var parameter 3 J j $end
+$upscope $end
+$scope begin genblk3[0] $end
+$var parameter 2 K j $end
+$upscope $end
+$scope begin genblk3[1] $end
+$var parameter 2 L j $end
+$upscope $end
+$scope begin genblk3[2] $end
+$var parameter 3 M j $end
+$upscope $end
+$scope begin genblk3[3] $end
+$var parameter 3 N j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk3[4] $end
+$var parameter 4 O j $end
+$upscope $end
+$scope begin genblk3[5] $end
+$var parameter 4 P j $end
+$upscope $end
+$scope begin genblk3[6] $end
+$var parameter 4 Q j $end
+$upscope $end
+$scope begin genblk3[7] $end
+$var parameter 4 R j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk3[8] $end
+$var parameter 5 S j $end
+$upscope $end
+$scope begin genblk3[9] $end
+$var parameter 5 T j $end
+$upscope $end
+$scope begin genblk3[10] $end
+$var parameter 5 U j $end
+$upscope $end
+$scope begin genblk3[11] $end
+$var parameter 5 V j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk3[12] $end
+$var parameter 5 W j $end
+$upscope $end
+$scope begin genblk3[13] $end
+$var parameter 5 X j $end
+$upscope $end
+$scope begin genblk3[14] $end
+$var parameter 5 Y j $end
+$upscope $end
+$scope begin genblk3[15] $end
+$var parameter 5 Z j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[0] $end
+$var parameter 2 [ j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[1] $end
+$var parameter 2 \ j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[2] $end
+$var parameter 3 ] j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[3] $end
+$var parameter 3 ^ j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[4] $end
+$var parameter 4 _ j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[5] $end
+$var parameter 4 ` j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[6] $end
+$var parameter 4 a j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[7] $end
+$var parameter 4 b j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[8] $end
+$var parameter 5 c j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[9] $end
+$var parameter 5 d j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[10] $end
+$var parameter 5 e j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[11] $end
+$var parameter 5 f j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[12] $end
+$var parameter 5 g j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[13] $end
+$var parameter 5 h j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[14] $end
+$var parameter 5 i j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin genblk4[15] $end
+$var parameter 5 j j $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b1111 j
+b1110 i
+b1101 h
+b1100 g
+b1011 f
+b1010 e
+b1001 d
+b1000 c
+b111 b
+b110 a
+b101 `
+b100 _
+b11 ^
+b10 ]
+b1 \
+b0 [
+b1111 Z
+b1110 Y
+b1101 X
+b1100 W
+b1011 V
+b1010 U
+b1001 T
+b1000 S
+b111 R
+b110 Q
+b101 P
+b100 O
+b11 N
+b10 M
+b1 L
+b0 K
+b11 J
+b10 I
+b1 H
+b0 G
+b1111 F
+b1110 E
+b1101 D
+b1100 C
+b1011 B
+b1010 A
+b1001 @
+b1000 ?
+b111 >
+b110 =
+b101 <
+b100 ;
+b11 :
+b10 9
+b1 8
+b0 7
+b11 3
+b110 2
+b100 1
+b10 0
+b11 /
+b1 .
+b1 -
+b100 ,
+b10000 +
+b1000 *
+b100 )
+b0 (
+b101 '
+b111 &
+$end
+#0
+$dumpvars
+bx 6
+bx 5
+bx 4
+0%
+z$
+z#
+bx "
+1!
+$end
+#500
+0!
+#1000
+b0 "
+b0 5
+b0 4
+b100 6
+1!
+1%
+#1500
+0!
+#2000
+b100 6
+1!
+0%
+#2500
+0!
+#3000
+b100 6
+1!
+#3500
+0!
+#4000
+b100 6
+1!
+#4500
+0!
+#5000
+b100 6
+1!
+#5500
+0!
+#6000
+b100 6
+1!
+#6500
+0!
+#7000
+b100 6
+1!
+#7500
+0!
+#8000
+b100 6
+1!
+#8500
+0!
+#9000
+b100 6
+1!
+#9500
+0!
+#10000
+b100 6
+1!
+1#
+1$
+#10500
+0!
+#11000
+b11 4
+b100 6
+1!
+#11500
+0!
+#12000
+b100 6
+1!
+#12500
+0!
+#13000
+b100 6
+1!
+#13500
+0!
+#14000
+b10 4
+b100 6
+1!
+#14500
+0!
+#15000
+1!
+#15500
+0!
+#16000
+b0 4
+b100 6
+1!
+#16500
+0!
+#17000
+b11 4
+b1 "
+b1 5
+b100 6
+1!
+#17500
+0!
+#18000
+b100 6
+1!
+#18500
+0!
+#19000
+b100 6
+1!
+#19500
+0!
+#20000
+b10 4
+b100 6
+1!
+#20500
+0!
+#21000
+1!
+#21500
+0!
+#22000
+b0 "
+b0 5
+b0 4
+b100 6
+1!
+#22500
+0!
+#23000
+b11 4
+b10 "
+b10 5
+b100 6
+1!
+#23500
+0!
+#24000
+b100 6
+1!
+#24500
+0!
+#25000
+b100 6
+1!
+#25500
+0!
+#26000
+b10 4
+b100 6
+1!
+#26500
+0!
+#27000
+1!
+#27500
+0!
+#28000
+b0 "
+b0 5
+b0 4
+b100 6
+1!
+#28500
+0!
+#29000
+b11 4
+b11 "
+b11 5
+b100 6
+1!
+#29500
+0!
+#30000
+b100 6
+1!
+#30500
+0!
+#31000
+b100 6
+1!
+#31500
+0!
+#32000
+b10 4
+b100 6
+1!
+#32500
+0!
+#33000
+1!
+#33500
+0!
+#34000
+b0 "
+b0 5
+b0 4
+b100 6
+1!
+#34500
+0!
+#35000
+b100 6
+1!
+#35500
+0!
+#36000
+b100 6
+1!
+#36500
+0!
+#37000
+b100 6
+1!
+#37500
+0!
+#38000
+b100 6
+1!
+#38500
+0!
+#39000
+b100 6
+1!
+#39500
+0!
+#40000
+b100 6
+1!
+#40500
+0!
+#41000
+b100 6
+1!
+#41500
+0!
+#42000
+b100 6
+1!
+#42500
+0!
+#43000
+b100 6
+1!
+#43500
+0!
+#44000
+b100 6
+1!
+#44500
+0!
+#45000
+b100 6
+1!
+#45500
+0!
+#46000
+b100 6
+1!
+#46500
+0!
+#47000
+b100 6
+1!
+#47500
+0!
+#48000
+b100 6
+1!
+#48500
+0!
+#49000
+b100 6
+1!
+#49500
+0!
+#50000
+b100 6
+1!
+#50500
+0!
+#51000
+b100 6
+1!
+#51500
+0!
+#52000
+b100 6
+1!
+#52500
+0!
+#53000
+b100 6
+1!
+#53500
+0!
+#54000
+b100 6
+1!
+#54500
+0!
+#55000
+b100 6
+1!
+#55500
+0!
+#56000
+b100 6
+1!
+#56500
+0!
+#57000
+b100 6
+1!
+#57500
+0!
+#58000
+b100 6
+1!
+#58500
+0!
+#59000
+b100 6
+1!
+#59001

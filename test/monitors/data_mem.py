@@ -12,7 +12,7 @@ class DataMemory:
   perspective where there are 4 active LSU modules interfacing with one shared memory
   '''
 
-  def __init__(self, dut, addr_bits, data_bits, num_chan):
+  def __init__(self, dut, addr_bits, data_bits, num_chan, name = ""):
     self.dut = dut
     self.addr_bits = addr_bits
     self.data_bits = data_bits
@@ -21,22 +21,23 @@ class DataMemory:
 
     # Interfacing ports of the memory
     # LSU Read Request
-    self.read_req_rdy = getattr(dut, "read_req_rdy")
-    self.read_req_addr = getattr(dut, "read_req_addr")
-    self.read_req_addr_val = getattr(dut, "read_req_addr_val")
+    self.read_req_rdy = getattr(dut, f"{name}read_req_rdy")
+    self.read_req_addr = getattr(dut, f"{name}read_req_addr")
+    self.read_req_addr_val = getattr(dut, f"{name}read_req_addr_val")
     # LSU Read Response
-    self.read_resp_rdy = getattr(dut,"read_resp_rdy")
-    self.read_resp_data = getattr(dut, "read_resp_data")
-    self.read_resp_data_val = getattr(dut, "read_resp_data_val")
+    self.read_resp_rdy = getattr(dut,f"{name}read_resp_rdy")
+    self.read_resp_data = getattr(dut, f"{name}read_resp_data")
+    self.read_resp_data_val = getattr(dut, f"{name}read_resp_data_val")
     # LSU Write Request
-    self.write_req_rdy = getattr(dut,"write_req_rdy")
-    self.write_req_addr = getattr(dut, "write_req_addr")
-    self.write_req_data = getattr(dut,"write_req_data")
-    self.write_req_val = getattr(dut,"write_req_val")
+    self.write_req_rdy = getattr(dut,f"{name}write_req_rdy")
+    self.write_req_addr = getattr(dut, f"{name}write_req_addr")
+    self.write_req_data = getattr(dut,f"{name}write_req_data")
+    self.write_req_val = getattr(dut,f"{name}write_req_val")
     # LSU Write Response
-    self.write_resp_val = getattr(dut,"write_resp_val")
+    self.write_resp_val = getattr(dut,f"{name}write_resp_val")
     # Compute Unit State
-    self.cu_state = getattr(dut, "compute_state")
+    if (name == ""):
+      self.cu_state = getattr(dut, "compute_state")
     # self.lsu_state = getattr(dut, "lsu_state")
 
     # Internal progression states
@@ -112,13 +113,13 @@ class DataMemory:
 
   # A secondary version of the run function without using the lsu state
   def run_nostate(self):
-    '''
-      This function handles asynchronously and generates the input values 
-      for the handshaking memory interface
-      ** Does not use the lsu_state flag to generate values
-    '''
+      '''
+        This function handles asynchronously and generates the input values 
+        for the handshaking memory interface
+        ** Does not use the lsu_state flag to generate values
+      '''
     # Only run our module if we are actually doing a data request
-    if int(self.cu_state.value) >= 4 and int(self.cu_state.value) <= 6: 
+    # if int(self.cu_state.value) >= 4 and int(self.cu_state.value) <= 6: 
       # Initializing lists to contain "output" data from the LSU's
       read_req_addr = []
       read_req_addr_val = []
@@ -153,7 +154,7 @@ class DataMemory:
           # Have a valid write or read request
           self.progress[n] = 1
         if self.progress[n] and read_resp_rdy[n]: 
-          self.dut._log.info(f"HERE{(read_resp_rdy)}")
+          # self.dut._log.info(f"HERE{(read_resp_rdy)}")
           # Ready to send a read response
           read_resp_data[n] = self.mem[int(read_req_addr[n])]
           read_resp_data_val[n] = 1

@@ -12,7 +12,7 @@ class InstMemory:
 
     Based off the example Monitors from cocotb examples
   '''
-  def __init__(self, dut, addr_bits, data_bits): 
+  def __init__(self, dut, addr_bits, data_bits, name="fetch"): 
     self.dut = dut
     self.addr_bits = addr_bits
     self.data_bits = data_bits
@@ -21,13 +21,16 @@ class InstMemory:
     self.progress = [0] * 1 # Internal list to keep track of active memory channels
 
     # Grabbing the "channels" of the dut that we communicate with 
-    self.fetch_req_rdy = getattr(dut, "fetch_req_rdy")
-    self.fetch_req_val = getattr(dut, "fetch_req_val")
-    self.fetch_req_addr = getattr(dut, "fetch_req_addr")
-    self.fetch_resp_rdy = getattr(dut, "fetch_resp_rdy")
-    self.fetch_resp_val = getattr(dut, "fetch_resp_val")
-    self.fetch_resp_inst = getattr(dut, "fetch_resp_inst")
-    self.cu_state = getattr(dut, "compute_state")
+    self.fetch_req_rdy = getattr(dut, f"{name}_req_rdy")
+    self.fetch_req_val = getattr(dut, f"{name}_req_val")
+    self.fetch_req_addr = getattr(dut, f"{name}_req_addr")
+    self.fetch_resp_rdy = getattr(dut, f"{name}_resp_rdy")
+    self.fetch_resp_val = getattr(dut, f"{name}_resp_val")
+    self.fetch_resp_inst = getattr(dut, f"{name}_resp_inst")
+    if (name == "fetch"):
+      self.cu_state = getattr(dut, "compute_state")
+    else: 
+      self.cu_state = 1
     # self.fetch_state = getattr(dut, "fetch_state")
   
   def run(self):
@@ -76,7 +79,7 @@ class InstMemory:
     self.fetch_resp_inst.value = fetch_resp_inst[0]
 
   def run_nostate(self):
-    if (int(self.cu_state.value) == 1):
+    # if (int(self.cu_state.value) == 1):
       # First defining data that the memory (this class) handles
       fetch_req_rdy = [0] * self.channels
       fetch_resp_val = [0] * self.channels
@@ -112,6 +115,7 @@ class InstMemory:
         fetch_req_rdy[0] = 0
         self.progress[0] = 0
       
+      # self.dut._log.info(f"{fetch_req_val}")
       # Updating output values
       self.fetch_req_rdy.value = fetch_req_rdy[0]
       self.fetch_resp_val.value = fetch_resp_val[0]

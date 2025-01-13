@@ -1,4 +1,4 @@
-`include "../../src/controllers/inst_controller.v"
+`include "../../src/controllers/inst_control.v"
 module wrapper_instcont #(
   parameter NUM_MEM_CHAN = 1,
             NUM_CORES = 4,
@@ -26,6 +26,8 @@ module wrapper_instcont #(
   input mem2fetch_resp_val,
   input [MEM_DATA_WIDTH-1:0] mem2fetch_resp_inst,
 
+  input [3:0] compute_state [NUM_CORES-1:0],
+
   output [NUM_CORES-1:0] compute_unit
 );
 
@@ -49,6 +51,7 @@ inst_controller #(
   .mem2fetch_resp_rdy(mem2fetch_resp_rdy),
   .mem2fetch_resp_val(mem2fetch_resp_val),
   .mem2fetch_resp_inst(mem2fetch_resp_inst),
+  .compute_state(compute_state),
   .compute_unit(compute_unit)
 );
 

@@ -40,8 +40,11 @@ async def manual_test(dut):
 
   # Defining controls to manually adjust - simulating the units
   fetch_req_val = [0,0,0,0]
-  fetch_req_addr = [0,0,0,0]
+  fetch_req_addr = [2,4,6,8]
   fetch_resp_rdy = [0,0,0,0]
+  completed = [0,0,0,0]
+  output_inst = [0,0,0,0]
+  compute_state = [1,1,1,1]
 
   # Initializing monitor for test
   inst_memory = inst_mem.InstMemory(dut, 8, 16, "mem2fetch")
@@ -51,42 +54,37 @@ async def manual_test(dut):
   await Timer(10, units ="ns")
   cycles = 0
 
-  # for i in range(4):
-  #     if (dut.fetch_req_rdy.value[i]):
-  #       # Set all of the units to be ready to accept an input
-  #       fetch_req_val[i] = 1
-  #       fetch_req_addr[i] = i*2
-  # dut._log.info(dut.fetch_req_rdy.value[0])
-
   while (cycles < 100):
     inst_memory.run_nostate()
-    if (cycles == 1) :
-      for i in range(4):
-        if (dut.fetch_req_rdy.value[i]):
-          # Set all of the units to be ready to accept an input
-          fetch_req_val[i] = 1
-          fetch_req_addr[i] = i*2
-      # dut._log.info(dut.fetch_req_rdy.value[0])
 
     for i in range(4):
-      if (dut.compute_unit.value == i): 
-        # Means that we have found the core the module is interfacing with 
-        fetch_resp_rdy[i] = 1
-        fetch_req_val[i] = 0
-    dut._log.info(fetch_resp_rdy)
-    # Logic to reset things 
+      if (dut.fetch_req_rdy.value[3-i] and (not completed[3-i])):
+        fetch_req_val[3-i] = 1
+    
+    if ((not completed[3-int(dut.compute_unit.value)])):
+      fetch_resp_rdy[3-int(dut.compute_unit.value)] = 1
+
+    # dut._log.info(f"{fetch_resp_rdy}")
+    
     for i in range(4):
-      if (dut.fetch_resp_val.value[i]):
-        # If unit[i] is receiving a valid response, set that ready signal to low
-        fetch_resp_rdy[i] = 0
-    # dut._log.info(f"{int(''.join(str(x) for x in fetch_req_val),2)}")
-    # dut.fetch_req_val.value = int(''.join(str(x) for x in fetch_req_val),2)
-    # dut.fetch_req_addr.value = int(''.join(str(x) for x in fetch_req_addr),2)
-    # dut.fetch_resp_rdy.value = int(''.join(str(x) for x in fetch_resp_rdy),2)
+      if (dut.fetch_resp_val.value[3-i]):
+        completed[3-i] = 1
+        output_inst[3-i] = dut.fetch_resp_inst.value[3-i]
+        fetch_resp_rdy[3-i] = 0
+
+    for i in range(4):
+      # Determine if the core has completed, then move it to decode & reset values
+      if (completed[3-i]):
+        compute_state[3-i] = 2
+        fetch_req_val[3-i] = 0
+
+    dut._log.info(f"{completed}")
     dut.fetch_req_val.value = fetch_req_val
     dut.fetch_req_addr.value = fetch_req_addr
     dut.fetch_resp_rdy.value = fetch_resp_rdy
+    dut.compute_state.value = compute_state
 
     await RisingEdge(dut.clk)
     cycles = cycles + 1
 
+  dut._log.info(f"{output_inst}")

@@ -32,7 +32,7 @@ module dispatcher #(
   input clk, 
   input reset,
 
-  // Func  tional Inputs
+  // Functional Inputs
   input [4:0] thread_count,
   input kernel_start, 
 

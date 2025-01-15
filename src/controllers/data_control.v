@@ -254,9 +254,54 @@ end
 
 // Debugging wires
 wire read_req_rdy0;
+wire read_req_rdy1;
+wire read_req_rdy2;
+wire read_req_rdy3;
 wire mem2read_req_rdy0;
-assign read_req_rdy0 = read_req_rdy_reg[0];
+wire mem2read_req_rdy1;
+wire mem2read_req_rdy2;
+wire mem2read_req_rdy3;
+assign read_req_rdy0 = read_req_rdy[0];
+assign read_req_rdy1 = read_req_rdy[1];
+assign read_req_rdy2 = read_req_rdy[2];
+assign read_req_rdy3 = read_req_rdy[3];
 assign mem2read_req_rdy0 = mem2read_req_rdy[0];
+assign mem2read_req_rdy1 = mem2read_req_rdy[1];
+assign mem2read_req_rdy2 = mem2read_req_rdy[2];
+assign mem2read_req_rdy3 = mem2read_req_rdy[3];
+
+wire mem2write_req_rdy0;
+wire mem2write_req_rdy1;
+wire mem2write_req_rdy2;
+wire mem2write_req_rdy3;
+wire [MEM_ADDR_WIDTH-1:0] mem2write_req_addr0;
+wire [MEM_ADDR_WIDTH-1:0] mem2write_req_addr1;
+wire [MEM_ADDR_WIDTH-1:0] mem2write_req_addr2;
+wire [MEM_ADDR_WIDTH-1:0] mem2write_req_addr3;
+wire [MEM_DATA_WIDTH-1:0] mem2write_req_data0;
+wire [MEM_DATA_WIDTH-1:0] mem2write_req_data1;
+wire [MEM_DATA_WIDTH-1:0] mem2write_req_data2;
+wire [MEM_DATA_WIDTH-1:0] mem2write_req_data3;
+wire mem2write_req_val0;
+wire mem2write_req_val1;
+wire mem2write_req_val2;
+wire mem2write_req_val3;
+assign mem2write_req_rdy0 = mem2write_req_rdy[0];
+assign mem2write_req_rdy1 = mem2write_req_rdy[1];
+assign mem2write_req_rdy2 = mem2write_req_rdy[2];
+assign mem2write_req_rdy3 = mem2write_req_rdy[3];
+assign mem2write_req_addr0 = mem2write_req_addr[0];
+assign mem2write_req_addr1 = mem2write_req_addr[1];
+assign mem2write_req_addr2 = mem2write_req_addr[2];
+assign mem2write_req_addr3 = mem2write_req_addr[3];
+assign mem2write_req_data0 = mem2write_req_data[0];
+assign mem2write_req_data1 = mem2write_req_data[1];
+assign mem2write_req_data2 = mem2write_req_data[2];
+assign mem2write_req_data3 = mem2write_req_data[3];
+assign mem2write_req_val0 = mem2write_req_val[0];
+assign mem2write_req_val1 = mem2write_req_val[1];
+assign mem2write_req_val2 = mem2write_req_val[2];
+assign mem2write_req_val3 = mem2write_req_val[3];
 
 
 

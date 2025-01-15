@@ -201,6 +201,7 @@ reg [DATA_WIDTH-1:0] rimm_data [NUM_THREADS-1:0];
 genvar i; 
 generate
 for (i=0; i < NUM_THREADS; i=i+1) begin 
+  localparam [1:0] unit_id = CU_IDX;
   xblock_rf #(
     .CU_IDX(CU_IDX),
     .CU_WIDTH(NUM_THREADS),
@@ -211,7 +212,7 @@ for (i=0; i < NUM_THREADS; i=i+1) begin
     .reset(reset),
     .cu_state(cu_state),
     .rf_enable(i < NUM_THREADS),
-    .cu_id(16'b0), // !!! Unsure if needed
+    .cu_id({14'b0, unit_id}), // !!! Unsure if needed
     //Decoder outputs
     .decoded_rd(rd),
     .decoded_rs1(rs1),
@@ -289,6 +290,14 @@ for (i=0; i < NUM_THREADS; i=i+1) begin
     .alu_func(alu_func),
     .next_pc(next_pc[i]) // Each LSU will have a separate PC, but we will only use the 0th thread's PC to update
   );
+
+  initial begin 
+    $dumpvars(2, inst_lsu);
+    $dumpvars(2, inst_rf);
+    $dumpvars(2, inst_alu);
+    $dumpvars(2, inst_pc);
+  end
+
 end
 endgenerate
 

@@ -7,10 +7,10 @@
 // 3. Instruction Memory Controller
 // 4. Data Memory controller
 // ===========================================
-`include "../dispatcher/dispatcher.v"
-`include "../cu/cu.v"
-`include "../controllers/data_control.v"
-`include "../controllers/inst_control.v"
+`include "../../src/dispatcher/dispatcher.v"
+`include "../../src/cu/cu.v"
+`include "../../src/controllers/data_control.v"
+`include "../../src/controllers/inst_control.v"
 module gpu #(
   parameter NUM_CORES = 4, 
             MEM_DATA_WIDTH = 16,
@@ -52,6 +52,11 @@ module gpu #(
   output kernel_complete
 );
 
+initial begin 
+  $dumpfile("gpu_dump.vcd");
+  $dumpvars(0, gpu);
+end
+
 // Internal Wire / Register Instantiations - Dispatcher
 reg [NUM_CORES-1:0] cu_enable;
 reg [NUM_CORES-1:0] cu_reset;
@@ -64,7 +69,7 @@ dispatcher #(
 ) inst_dispatcher (
   .clk(clk),
   .reset(reset),
-  .thread_count(NUM_CORES*THREADS_PER_CORE),
+  .thread_count(5'b10000),
   .kernel_start(kernel_start),
   .cu_complete(cu_complete),
   .cu_enable(cu_enable),
@@ -74,12 +79,17 @@ dispatcher #(
 );
 
 // Internal Wire / Register Instantiations - Instructions
-reg fetch_req_rdy [NUM_CORES-1:0];
+wire fetch_req_rdy [NUM_CORES-1:0];
 reg fetch_req_val [NUM_CORES-1:0];
 reg [MEM_ADDR_WIDTH-1:0] fetch_req_addr [NUM_CORES-1:0];
 reg fetch_resp_rdy [NUM_CORES-1:0];
-reg fetch_resp_val [NUM_CORES-1:0];
-reg [MEM_DATA_WIDTH-1:0] fetch_resp_inst [NUM_CORES-1:0];
+wire fetch_resp_val [NUM_CORES-1:0];
+wire [MEM_DATA_WIDTH-1:0] fetch_resp_inst [NUM_CORES-1:0];
+
+wire fetch_req_rdy_gpu0; 
+wire mem2fetch_req_rdy_gpu0; 
+assign fetch_req_rdy_gpu0 = fetch_req_rdy[0];
+assign mem2fetch_req_rdy_gpu0 = mem2fetch_req_rdy;
 
 inst_controller #(
   .NUM_MEM_CHAN(1),
@@ -108,20 +118,30 @@ inst_controller #(
 );
 
 // Internal Wire / Register Instantiations - Instructions
-reg read_req_rdy [(NUM_CORES*THREADS_PER_CORE)-1:0];
+wire read_req_rdy [(NUM_CORES*THREADS_PER_CORE)-1:0];
 reg read_req_addr_val [(NUM_CORES*THREADS_PER_CORE)-1:0];
 reg [MEM_ADDR_WIDTH-1:0] read_req_addr [(NUM_CORES*THREADS_PER_CORE)-1:0];
 
 reg read_resp_rdy [(NUM_CORES*THREADS_PER_CORE)-1:0];
-reg [MEM_DATA_WIDTH-1:0] read_resp_data [(NUM_CORES*THREADS_PER_CORE)-1:0];
-reg read_resp_data_val [(NUM_CORES*THREADS_PER_CORE)-1:0];
+wire [MEM_DATA_WIDTH-1:0] read_resp_data [(NUM_CORES*THREADS_PER_CORE)-1:0];
+wire read_resp_data_val [(NUM_CORES*THREADS_PER_CORE)-1:0];
 
-reg write_req_rdy [(NUM_CORES*THREADS_PER_CORE)-1:0];
+wire write_req_rdy [(NUM_CORES*THREADS_PER_CORE)-1:0];
 reg [MEM_ADDR_WIDTH-1:0] write_req_addr [(NUM_CORES*THREADS_PER_CORE)-1:0];
 reg [MEM_DATA_WIDTH-1:0] write_req_data [(NUM_CORES*THREADS_PER_CORE)-1:0];
 reg write_req_val [(NUM_CORES*THREADS_PER_CORE)-1:0];
 
-reg write_resp_val [(NUM_CORES*THREADS_PER_CORE)-1:0];
+wire write_resp_val [(NUM_CORES*THREADS_PER_CORE)-1:0];
+
+// Top level debugging
+reg read_req_rdy0; 
+reg read_req_rdy1; 
+reg read_req_rdy2; 
+reg read_req_rdy3; 
+assign read_req_rdy0 = read_req_rdy[0]; 
+assign read_req_rdy1 = read_req_rdy[1]; 
+assign read_req_rdy2 = read_req_rdy[2]; 
+assign read_req_rdy3 = read_req_rdy[3]; 
 
 data_controller #(
   .NUM_DATA_CHAN(4),
@@ -139,11 +159,11 @@ data_controller #(
   .read_resp_rdy(read_resp_rdy),
   .read_resp_data(read_resp_data),
   .read_resp_data_val(read_resp_data_val),
-  .write_req_rdy(),
-  .write_req_addr(),
-  .write_req_data(),
-  .write_req_val(),
-  .write_resp_val(),
+  .write_req_rdy(write_req_rdy),
+  .write_req_addr(write_req_addr),
+  .write_req_data(write_req_data),
+  .write_req_val(write_req_val),
+  .write_resp_val(write_resp_val),
   // Global Memory Connection
   .mem2read_req_rdy(mem2read_req_rdy),
   .mem2read_req_addr(mem2read_req_addr),
@@ -166,15 +186,15 @@ genvar i;
 for (i=0;i<NUM_CORES;i=i+1) begin 
   // Creating the separate registers here to help with slicing
   reg read_req_rdy_unit [THREADS_PER_CORE-1:0]; 
-  reg read_req_addr_val_unit [THREADS_PER_CORE-1:0];
-  reg [MEM_ADDR_WIDTH-1:0] read_req_addr_unit [THREADS_PER_CORE-1:0];
-  reg read_resp_rdy_unit [THREADS_PER_CORE-1:0]; 
+  wire read_req_addr_val_unit [THREADS_PER_CORE-1:0];
+  wire [MEM_ADDR_WIDTH-1:0] read_req_addr_unit [THREADS_PER_CORE-1:0];
+  wire read_resp_rdy_unit [THREADS_PER_CORE-1:0]; 
   reg [MEM_DATA_WIDTH-1:0] read_resp_data_unit [THREADS_PER_CORE-1:0];
   reg read_resp_data_val_unit [THREADS_PER_CORE-1:0];
   reg write_req_rdy_unit [THREADS_PER_CORE-1:0];
-  reg [MEM_ADDR_WIDTH-1:0] write_req_addr_unit [THREADS_PER_CORE-1:0];
-  reg [MEM_DATA_WIDTH-1:0] write_req_data_unit [THREADS_PER_CORE-1:0];
-  reg write_req_val_unit [THREADS_PER_CORE-1:0];
+  wire [MEM_ADDR_WIDTH-1:0] write_req_addr_unit [THREADS_PER_CORE-1:0];
+  wire [MEM_DATA_WIDTH-1:0] write_req_data_unit [THREADS_PER_CORE-1:0];
+  wire write_req_val_unit [THREADS_PER_CORE-1:0];
   reg write_resp_val_unit [THREADS_PER_CORE-1:0];
 
   // Assigning the appropriate value
@@ -233,6 +253,11 @@ for (i=0;i<NUM_CORES;i=i+1) begin
     .write_req_val(write_req_val_unit),
     .write_resp_val(write_resp_val_unit)
   );
+
+  initial begin 
+    $dumpvars (1, inst_cu);
+  end
+
 end
 
 endmodule

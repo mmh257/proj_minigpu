@@ -1,6 +1,8 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1736805657" />
-    <testcase name="manual_test_write" classname="datacontrol_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/datacontrol_test/datacontrol_test.py" lineno="114" time="0.02789902687072754" sim_time_ns="59.001" ratio_time="2114.8049454694615" />
+    <property name="random_seed" value="1736787465" />
+    <testcase name="manual_test" classname="datacontrol_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/datacontrol_test/datacontrol_test.py" lineno="17" time="88243.10806369781" sim_time_ns="22548.0" ratio_time="0.2555213715242651">
+      <failure message="Test failed with RANDOM_SEED=1736787465" />
+    </testcase>
   </testsuite>
 </testsuites>

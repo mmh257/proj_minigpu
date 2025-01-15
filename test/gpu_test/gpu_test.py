@@ -62,7 +62,7 @@ async def simple_vector_add(dut):
       (24, 8), (25, 7), (26, 6), (27, 5), 
       (28, 4), (29, 3), (30, 2), (31, 1)
     ]
-      # Setting up instr and data memory
+    # Setting up instr and data memory
     inst_memory = inst_mem.InstMemory(dut, 8, 16, "mem2fetch")
     data_memory = data_mem.DataMemory(dut, 8, 16, 4, "mem2")
     data_memory.load(data)
@@ -86,3 +86,77 @@ async def simple_vector_add(dut):
       cycles = cycles + 1
     
     data_memory.log_data()
+
+@cocotb.test()
+async def simple_mat_mul(dut):
+  '''
+  Second basic test case to perform matrix multiplication
+  To simplify the operation, we will be multiplying 2 2x2 matricies together
+  | 1 2 |  \/  | 5 6 |    YIELDS:   | 19 22 |
+  | 3 4 |  /\  | 7 8 |              | 43 50 |
+  '''
+
+  instr = [
+    (0 , 0b1000_0000_0000_0000), # CONST R0 0      : R0 <= base addr A 
+    (2 , 0b1000_0001_0001_0000), # CONST R1 16     : R1 <= base addr B
+    (4 , 0b1000_0010_0010_0000), # CONST R2 32     : R2 <= base addr C 
+    (6 , 0b1000_0011_0000_0010), # CONST R3 2      : R3 <= N (N = 2)
+    (8 , 0b1000_0100_0000_0000), # CONST R4 0      : R4 <= k (k = 0)
+    (10, 0b1000_1100_0000_0001), # CONST R12 1     : R12 <= 1
+    (12, 0b1000_1011_0001_1000), # CONST R11 24    : R11 <= RIMM = 24
+    (14, 0b0011_0101_1111_0011), # DIV R5 R15 R3   : R5 <= Thread_ID / N    : R5 <= a_row_id
+    (16, 0b0010_0110_0101_0011), # MUL R6 R5 R3    : R6 <= R5 * N
+    (18, 0b0001_0110_1111_0110), # SUB R6 R15 R6   : R6 <= Thread_ID - Floor(Thread_ID/N) AKA (Thread_ID mod 2) : R6 <= b_col_id
+    (20, 0b0000_0110_0110_0001), # ADD R6 R6 R2    : R6 <= base addr B + b_col_id
+    (22, 0b0010_0101_0101_0011), # MUL R5 R5 R3    : R5 <= R5 * 2         : R5 <= start of row index
+    # LOOP
+    (24, 0b1001_0000_0111_0101), # LW R7 R5        : R7 <= mem[a_row_id]
+    (26, 0b1001_0000_1000_0110), # LW R8 R6        : R8 <= mem[b_col_id]
+    (28, 0b0010_1001_0111_1000), # MUL R9 R7 R8    : R9 <= R7 * R8
+    (30, 0b0000_1010_1001_1010), # ADD R10 R9 R10  : R10 <= R9 + R10          
+    (32, 0b0000_0101_0101_1100), # ADD R5 R5 R12   : R5 <= R5 + 1             : row_idx = row_idx + 1
+    (34, 0b0000_0110_0110_0011), # ADD R6 R6 R3    : R6 <= R6 + 2             : col_idx = col_idx + 2
+    (36, 0b0000_0100_0100_1100), # ADD R4 R4 R12   : R4 <= R4 + 1             : k = k+1
+    (38, 0b0110_1011_0100_0011), # BNE R11 R4 R3   : if (k < N) redo loop
+    # Exit Loop
+    (40, 0b0000_0010_0010_1111), # ADD R2 R15      : base addr C = base addr C + thread_ID
+    (42, 0b1010_0000_1010_0010), # SW R10 R2       : Store data at register R10 onto mem location R2 mem[R2] <= R10
+    (44, 0b1100_0000_0000_0000)  # JR
+  ]
+
+  data = [
+    (0, 1), (1, 2), (2, 3), (3, 4),
+    (16, 5), (17, 6), (18, 7), (19, 8)
+  ]
+  # Setting up instr and data memory
+  inst_memory = inst_mem.InstMemory(dut, 8, 16, "mem2fetch")
+  data_memory = data_mem.DataMemory(dut, 8, 16, 4, "mem2")
+  data_memory.load(data)
+  inst_memory.load(instr)
+
+  # Setting up clock
+  c = Clock(dut.clk, 1, "ns")
+  await cocotb.start(c.start())
+
+  # Reset dut
+  await cocotb.start(reset_dut(dut.reset, 1))
+  await Timer(10, units = "ns")
+
+  dut.kernel_start.value = 1
+  cycles = 0
+  while (cycles < 500 or not dut.kernel_complete.value == 1): 
+    inst_memory.run_nostate()
+    data_memory.run_nostate() 
+  
+    await RisingEdge(dut.clk)
+    cycles = cycles + 1
+  
+  # Checking expected values: 
+
+  expected_data = [19, 22, 43, 50]
+  expected_idx = [32, 33, 34, 35]
+  result_mem = data_memory.mem
+  for i in range(4):
+    assert expected_data[i] == result_mem[expected_idx[i]], f"Did not properly calculate values"
+
+  data_memory.log_data()

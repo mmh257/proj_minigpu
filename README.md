@@ -39,6 +39,7 @@ Reference Links & Sources:
   - [Next Steps](#next-steps)
 
 
+
 ## Introduction
 
 Much of the actual architecture wtihin modern GPUs remain largely restricted to the public, however the foundational architecture utilized in this project is roughly similar. In CPU land, the multistage pipelined processor is often taught and built off as the baseline model for understanding CPUs and basic computer architectural principles, however when searching for similar models with respect to GPUs, resources and models like that were hard to come across which inspired me to explore and create a simple model to better understand how GPUs work. 

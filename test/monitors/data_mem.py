@@ -205,4 +205,16 @@ class DataMemory:
       self.dut._log.info(f"{addr} : {data}")
       addr = addr + 1
 
+  def pretty_log(self):
+    cols = 8
+    rows = int(len(self.mem) / cols)
+    addr = 0
+    for i in range(rows): 
+      temp_row = self.mem[8*i:8*i+8]
+      temp_str = ""
+      for num in temp_row: 
+        temp_str += "| " + str(addr).rjust(3) + " : " + str(num).rjust(3)
+        addr += 1
+      self.dut._log.info(temp_str)
+
       

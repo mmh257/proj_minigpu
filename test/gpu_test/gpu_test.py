@@ -85,7 +85,8 @@ async def simple_vector_add(dut):
       await RisingEdge(dut.clk)
       cycles = cycles + 1
     
-    data_memory.log_data()
+    # data_memory.log_data()
+    data_memory.pretty_log()
 
 @cocotb.test()
 async def simple_mat_mul(dut):
@@ -107,7 +108,7 @@ async def simple_mat_mul(dut):
     (14, 0b0011_0101_1111_0011), # DIV R5 R15 R3   : R5 <= Thread_ID / N    : R5 <= a_row_id
     (16, 0b0010_0110_0101_0011), # MUL R6 R5 R3    : R6 <= R5 * N
     (18, 0b0001_0110_1111_0110), # SUB R6 R15 R6   : R6 <= Thread_ID - Floor(Thread_ID/N) AKA (Thread_ID mod 2) : R6 <= b_col_id
-    (20, 0b0000_0110_0110_0001), # ADD R6 R6 R2    : R6 <= base addr B + b_col_id
+    (20, 0b0000_0110_0110_0001), # ADD R6 R6 R1    : R6 <= base addr B + b_col_id
     (22, 0b0010_0101_0101_0011), # MUL R5 R5 R3    : R5 <= R5 * 2         : R5 <= start of row index
     # LOOP
     (24, 0b1001_0000_0111_0101), # LW R7 R5        : R7 <= mem[a_row_id]
@@ -159,4 +160,5 @@ async def simple_mat_mul(dut):
   for i in range(4):
     assert expected_data[i] == result_mem[expected_idx[i]], f"Did not properly calculate values"
 
-  data_memory.log_data()
+  # data_memory.log_data()
+  data_memory.pretty_log()

@@ -1,6 +1,7 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1736963822" />
-    <testcase name="simple_mat_mul" classname="gpu_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/gpu_test/gpu_test.py" lineno="90" time="0.1422100067138672" sim_time_ns="974.001" ratio_time="6849.032796684504" />
+    <property name="random_seed" value="1737046614" />
+    <testcase name="simple_vector_add" classname="gpu_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/gpu_test/gpu_test.py" lineno="19" time="0.07593274116516113" sim_time_ns="509.001" ratio_time="6703.313908987864" />
+    <testcase name="simple_mat_mul" classname="gpu_test" file="/Users/mhui/Documents/proj_hdl/proj_minigpu/test/gpu_test/gpu_test.py" lineno="91" time="0.13685297966003418" sim_time_ns="966.001" ratio_time="7058.677146816306" />
   </testsuite>
 </testsuites>

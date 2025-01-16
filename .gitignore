@@ -1,0 +1,6 @@
+.vscode/
+venv/
+test/alu_test/__pycache__/
+test/alu_test/sim_build/
+test/alu_test/Makefile
+

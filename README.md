@@ -10,7 +10,6 @@ Reference Links & Sources:
 
 **Table Of Contents**
 
-- [MINIGPU Project Overview](#minigpu-project-overview)
   - [Introduction](#introduction)
   - [File Organization](#file-organization)
   - [Architecture Overview](#architecture-overview)
@@ -20,19 +19,6 @@ Reference Links & Sources:
     - [Modules Overview](#modules-overview)
   - [Handshaking Protocol Overview](#handshaking-protocol-overview)
   - [ISA Overview](#isa-overview)
-      - [ADD](#add)
-      - [SUB](#sub)
-      - [MUL](#mul)
-      - [DIV](#div)
-      - [BNE](#bne)
-      - [BEQ](#beq)
-      - [BLT](#blt)
-      - [BGT](#bgt)
-      - [CONST](#const)
-      - [LW](#lw)
-      - [SW](#sw)
-      - [NOP](#nop)
-      - [JR](#jr)
   - [Testing](#testing)
     - [Vector-Vector Add Test](#vector-vector-add-test)
     - [Matrix Multiplication Test](#matrix-multiplication-test)
